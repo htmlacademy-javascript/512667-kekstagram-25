@@ -1,6 +1,6 @@
 // ( used code from: https://learn.javascript.ru/task/random-int-min-max )
 
-function randomInteger (min, max) {
+function getRandomInteger (min, max) {
 
   let maxNew = Math.floor(max);
   let minNew = Math.floor(min);
@@ -26,11 +26,11 @@ function randomInteger (min, max) {
 
 }
 
-randomInteger (0, 5);
+getRandomInteger (0, 5);
 
-function checkComment (comment = '', max = 140) {
+function checkContentLength (content, max = 140) {
 
-  if (comment.length > max) {
+  if (content.length > max) {
     return false;
   }
 
@@ -38,4 +38,4 @@ function checkComment (comment = '', max = 140) {
 
 }
 
-checkComment ('Комментарий от Кекса');
+checkContentLength ('Комментарий от Кекса');
