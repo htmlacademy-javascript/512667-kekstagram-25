@@ -1,41 +1,17 @@
-// ( used code from: https://learn.javascript.ru/task/random-int-min-max )
+// Функция взята из интернета и доработана Кексом
+// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 
-function getRandomInteger (min, max) {
-
-  let maxNew = Math.floor(max);
-  let minNew = Math.floor(min);
-
-  if (maxNew < 0) {
-    maxNew = 0;
-  }
-
-  if (minNew < 0) {
-    minNew = 0;
-  }
-
-  if (minNew === maxNew) {
-    return minNew;
-  }
-
-  if (minNew > maxNew) {
-    maxNew = Math.floor(min);
-    minNew = Math.floor(max);
-  }
-
-  return Math.floor(Math.random() * (maxNew + 1 - minNew)) + minNew;
-
+function getRandomPositiveInteger (a, b) {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
 }
 
-getRandomInteger (0, 5);
+getRandomPositiveInteger (0, 5);
 
-function checkContentLength (content, max = 140) {
-
-  if (content.length > max) {
-    return false;
-  }
-
-  return true;
-
+function checkStringLength (string, length) {
+  return string.length <= length;
 }
 
-checkContentLength ('Комментарий от Кекса');
+checkStringLength ('Комментарий от Кекса');
