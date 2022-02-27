@@ -44,7 +44,7 @@ const DESCRIPTIONS = [
   'Авто на затопленной дороге и бегемот с открытой пастью в воде',
 ];
 
-const SIMILAR_COMMENT_COUNT = MESSAGES.length;
+const SIMILAR_NAME_COUNT = NAMES.length;
 const SIMILAR_PHOTO_COUNT = DESCRIPTIONS.length;
 
 // Функция взята из интернета и доработана Кексом
@@ -69,37 +69,35 @@ function getRandomArrayElement (elements) {
   return elements[getRandomPositiveInteger (0, elements.length - 1)];
 }
 
-const idPhoto = [];
-const urlPhoto = [];
-
-for (let i = 0; i < SIMILAR_PHOTO_COUNT; i++) {
-  idPhoto[i] = i + 1;
-  urlPhoto[i] = 'photos/' . concat (idPhoto[i], '.jpg');
-}
-
-function createPhoto () {
-  return {
-    id: getRandomArrayElement (idPhoto),
-    url: getRandomArrayElement (urlPhoto),
-    description: getRandomArrayElement (DESCRIPTIONS),
-    likes: getRandomPositiveInteger (15, 200),
-  };
-}
+const dataComment = [];
 
 function createComment () {
-  return {
-    id: getRandomPositiveInteger (0, SIMILAR_COMMENT_COUNT),
-    avatar: 'img/avatar-' . concat (getRandomPositiveInteger (1, SIMILAR_COMMENT_COUNT), '.svg'),
-    message: getRandomArrayElement (MESSAGES),
-    name: getRandomArrayElement (NAMES),
-  };
+  for (let i = 1; i <= SIMILAR_PHOTO_COUNT; i++) {
+    dataComment.push({
+      id: getRandomPositiveInteger (1, 999),
+      avatar: 'img/avatar-' . concat (getRandomPositiveInteger (1, SIMILAR_NAME_COUNT), '.svg'),
+      message: getRandomArrayElement (MESSAGES),
+      name: getRandomArrayElement (NAMES),
+    });
+  }
+  return dataComment;
 }
 
-const similarPhoto = Array.from ({length: SIMILAR_PHOTO_COUNT}, createPhoto);
-const similarComment = Array.from ({length: SIMILAR_COMMENT_COUNT}, createComment);
+createComment();
 
-// console.log(similarPhoto);
-// console.log(similarComment);
+const dataPhoto = [];
 
-print (similarPhoto);
-print (similarComment);
+function createPhoto () {
+  for (let i = 1; i <= SIMILAR_PHOTO_COUNT; i++) {
+    dataPhoto.push({
+      id: i,
+      url: 'photos/' . concat (i, '.jpg'),
+      description: DESCRIPTIONS[i],
+      likes: getRandomPositiveInteger (15, 200),
+      comments: dataComment[i - 1],
+    });
+  }
+  return dataPhoto;
+}
+
+createPhoto();
