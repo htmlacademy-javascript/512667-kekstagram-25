@@ -45,59 +45,50 @@ const DESCRIPTIONS = [
 ];
 
 const SIMILAR_NAME_COUNT = NAMES.length;
+// const SIMILAR_MESSAGE_COUNT = MESSAGES.length;
 const SIMILAR_PHOTO_COUNT = DESCRIPTIONS.length;
 
 // Функция взята из интернета и доработана Кексом
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 
-function getRandomPositiveInteger (a, b) {
+const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
-}
+};
 
 // getRandomPositiveInteger (0, 5);
 
-function checkStringLength (string, length) {
-  return string.length <= length;
-}
+const checkStringLength = (string, length) => string.length <= length;
 
-checkStringLength ('Комментарий от Кекса');
+// checkStringLength ('Комментарий от Кекса', 140);
 
-function getRandomArrayElement (elements) {
-  return elements[getRandomPositiveInteger (0, elements.length - 1)];
-}
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger (0, elements.length - 1)];
 
-const dataComment = [];
+const createCommentsData = () => ({
+  id: getRandomPositiveInteger (1, 999),
+  avatar: 'img/avatar-' . concat (getRandomPositiveInteger (1, SIMILAR_NAME_COUNT), '.svg'),
+  message: getRandomArrayElement (MESSAGES),
+  name: getRandomArrayElement (NAMES),
+});
 
-function createComment () {
-  for (let i = 1; i <= SIMILAR_PHOTO_COUNT; i++) {
-    dataComment.push({
-      id: getRandomPositiveInteger (1, 999),
-      avatar: 'img/avatar-' . concat (getRandomPositiveInteger (1, SIMILAR_NAME_COUNT), '.svg'),
-      message: getRandomArrayElement (MESSAGES),
-      name: getRandomArrayElement (NAMES),
-    });
-  }
-  return dataComment;
-}
+// const commentsData = Array.from({length: SIMILAR_MESSAGE_COUNT}, createCommentsData);
 
-createComment();
+const getRandomCommentsCount = (maxCommentsCount, myFunction) => Array.from({length: getRandomPositiveInteger(1, maxCommentsCount)}, myFunction);
 
-const dataPhoto = [];
+let photoId = 1;
+let photoUrl = 1;
+let photoDescription = 0;
 
-function createPhoto () {
-  for (let i = 1; i <= SIMILAR_PHOTO_COUNT; i++) {
-    dataPhoto.push({
-      id: i,
-      url: 'photos/' . concat (i, '.jpg'),
-      description: DESCRIPTIONS[i],
-      likes: getRandomPositiveInteger (15, 200),
-      comments: dataComment[i - 1],
-    });
-  }
-  return dataPhoto;
-}
+const createPhotosData = () => ({
+  id: photoId++,
+  url: 'photos/' . concat (photoUrl++, '.jpg'),
+  description: DESCRIPTIONS[photoDescription++],
+  likes: getRandomPositiveInteger (15, 200),
+  comments: getRandomCommentsCount (2, createCommentsData),
+});
 
-createPhoto();
+const photosData = Array.from({length: SIMILAR_PHOTO_COUNT}, createPhotosData);
+
+checkStringLength (photosData[getRandomPositiveInteger (0, SIMILAR_PHOTO_COUNT - 1)].description, 140);
