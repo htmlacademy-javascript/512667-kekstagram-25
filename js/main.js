@@ -44,51 +44,85 @@ const DESCRIPTIONS = [
   'Авто на затопленной дороге и бегемот с открытой пастью в воде',
 ];
 
-const SIMILAR_NAME_COUNT = NAMES.length;
-// const SIMILAR_MESSAGE_COUNT = MESSAGES.length;
-const SIMILAR_PHOTO_COUNT = DESCRIPTIONS.length;
+const MAXIMUM_STRING_LENGTH = 140;
 
-// Функция взята из интернета и доработана Кексом
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
+const MAXIMUM_COMMENTS = 2;
+const MINIMUM_COMMENTS = 1;
 
-const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
+const MAXIMUM_LIKES = 200;
+const MINIMUM_LIKES = 15;
 
-// getRandomPositiveInteger (0, 5);
+const MAXIMUM_PHOTOS = DESCRIPTIONS.length; // 25
+
+const MAXIMUM_NAMES = NAMES.length; // 6
+const MINIMUM_NAMES = 1;
 
 const checkStringLength = (string, length) => string.length <= length;
 
-// checkStringLength ('Комментарий от Кекса', 140);
+checkStringLength('Комментарий от Кекса', MAXIMUM_STRING_LENGTH);
 
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger (0, elements.length - 1)];
+const getRandomPositiveInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-const createCommentsData = () => ({
-  id: getRandomPositiveInteger (1, 999),
-  avatar: 'img/avatar-' . concat (getRandomPositiveInteger (1, SIMILAR_NAME_COUNT), '.svg'),
-  message: getRandomArrayElement (MESSAGES),
-  name: getRandomArrayElement (NAMES),
+  return Math.floor(result);
+};
+
+// getRandomPositiveInteger(0, 5);
+
+const createIdGenerator = () => {
+  let lastGeneratedId = 0;
+
+  return function () {
+    lastGeneratedId += 1;
+    return lastGeneratedId;
+  };
+};
+
+const generatePhotoId = createIdGenerator();
+const generatePhotoUrl = createIdGenerator();
+const generatePhotoDescription = createIdGenerator();
+
+const createRandomIdFromRangeGenerator = (min, max) => {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = getRandomPositiveInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomPositiveInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
+const generateCommentId = createRandomIdFromRangeGenerator(MINIMUM_COMMENTS, MAXIMUM_COMMENTS * MAXIMUM_PHOTOS);
+
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
+
+const createCommentData = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${ getRandomPositiveInteger(MINIMUM_NAMES, MAXIMUM_NAMES) }.svg`,
+  message: getRandomArrayElement(MESSAGES),
+  name: getRandomArrayElement(NAMES),
 });
 
-// const commentsData = Array.from({length: SIMILAR_MESSAGE_COUNT}, createCommentsData);
+const createRandomArrayFromRangeGenerator = (minValue, maxValue, callback) => Array.from({ length: getRandomPositiveInteger(minValue, maxValue) }, callback);
 
-const getRandomCommentsCount = (maxCommentsCount, myFunction) => Array.from({length: getRandomPositiveInteger(1, maxCommentsCount)}, myFunction);
-
-let photoId = 1;
-let photoUrl = 1;
-let photoDescription = 0;
-
-const createPhotosData = () => ({
-  id: photoId++,
-  url: 'photos/' . concat (photoUrl++, '.jpg'),
-  description: DESCRIPTIONS[photoDescription++],
-  likes: getRandomPositiveInteger (15, 200),
-  comments: getRandomCommentsCount (2, createCommentsData),
+const createPhotoData = () => ({
+  id: generatePhotoId(),
+  url: `photos/${ generatePhotoUrl() }.jpg`,
+  description: DESCRIPTIONS[generatePhotoDescription() - 1],
+  likes: getRandomPositiveInteger(MINIMUM_LIKES, MAXIMUM_LIKES),
+  comments: createRandomArrayFromRangeGenerator(MINIMUM_COMMENTS, MAXIMUM_COMMENTS, createCommentData),
 });
 
-const photosData = Array.from({length: SIMILAR_PHOTO_COUNT}, createPhotosData);
+const createArrayGenerator = (arrayLength, callback) => Array.from({ length: arrayLength }, callback);
 
-checkStringLength (photosData[getRandomPositiveInteger (0, SIMILAR_PHOTO_COUNT - 1)].description, 140);
+const createAllPhotosData = () => createArrayGenerator(MAXIMUM_PHOTOS, createPhotoData);
+
+createAllPhotosData();
