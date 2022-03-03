@@ -11,7 +11,7 @@ const getRandomPositiveInteger = (min, max) => {
 const createIdGenerator = () => {
   let lastGeneratedId = 0;
 
-  return function () {
+  return () => {
     lastGeneratedId += 1;
     return lastGeneratedId;
   };
@@ -20,7 +20,7 @@ const createIdGenerator = () => {
 const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
-  return function () {
+  return () => {
     let currentValue = getRandomPositiveInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
       return null;
