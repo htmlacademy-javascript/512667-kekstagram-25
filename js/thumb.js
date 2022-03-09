@@ -27,4 +27,5 @@ const createThumbs = () => picture.appendChild(fragment);
 
 export {
   createThumbs,
+  photosData,
 };
