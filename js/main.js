@@ -1,5 +1,5 @@
 import {
-  createAllPhotosData,
-} from './data.js';
+  createThumbs,
+} from './thumb.js';
 
-createAllPhotosData();
+createThumbs();
