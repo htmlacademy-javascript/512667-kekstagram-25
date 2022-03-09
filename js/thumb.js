@@ -2,7 +2,7 @@ import {
   createAllPhotosData,
 } from './data.js';
 
-const photosdata = createAllPhotosData();
+const photosData = createAllPhotosData();
 
 const picture = document.querySelector('.pictures');
 
@@ -12,7 +12,7 @@ const template = templateFragment.querySelector('.picture');
 
 const fragment = document.createDocumentFragment();
 
-photosdata.forEach(({url, description, comments, likes}) => {
+photosData.forEach(({url, description, comments, likes}) => {
   const element = template.cloneNode(true);
 
   element.querySelector('.picture__img').src = url;
