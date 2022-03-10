@@ -1,8 +1,12 @@
 import {
+  createThumbs,
   photosData,
 } from './thumb.js';
 
+createThumbs();
+
 const bodyTag = document.querySelector('body');
+const pictures = document.querySelectorAll('.picture');
 const bigPicture = document.querySelector('.big-picture');
 
 const bigPictureImg = bigPicture.querySelector('.big-picture__img');
@@ -37,34 +41,40 @@ bigPictureCancel.addEventListener('click', () => {
   bigPicture.classList.add('hidden');
 });
 
-const pictures = document.querySelectorAll('.picture');
+const createBigPicture = () => {
 
-for (let i = 0; i < photosData.length; i++) {
-  pictures[i].addEventListener('click', (evt) => {
-    evt.preventDefault();
+  for (let i = 0; i < photosData.length; i++) {
+    pictures[i].addEventListener('click', (evt) => {
+      evt.preventDefault();
 
-    bodyTag.classList.add('modal-open');
-    bigPicture.classList.remove('hidden');
+      bodyTag.classList.add('modal-open');
+      bigPicture.classList.remove('hidden');
 
-    bigPictureImg.children[0].src = photosData[i].url;
-    bigPictureImg.children[0].alt = photosData[i].description;
-    bigPictureAlt.textContent = photosData[i].description;
-    bigPictureLikes.textContent = photosData[i].likes;
-    bigPictureCommentsCount.textContent = photosData[i].comments.length;
+      bigPictureImg.children[0].src = photosData[i].url;
+      bigPictureImg.children[0].alt = photosData[i].description;
+      bigPictureAlt.textContent = photosData[i].description;
+      bigPictureLikes.textContent = photosData[i].likes;
+      bigPictureCommentsCount.textContent = photosData[i].comments.length;
 
-    bigPictureComments.innerHTML = '';
+      bigPictureComments.innerHTML = '';
 
-    for (let j = 0; j < photosData[i].comments.length; j++) {
-      bigPictureComments.innerHTML += `
-      <li class="social__comment">
-        <img
-            class="social__picture"
-            src="${ photosData[i].comments[j].avatar }"
-            alt="${ photosData[i].comments[j].name }"
-            width="35" height="35">
-        <p class="social__text">${ photosData[i].comments[j].message }</p>
-      </li>
-      `;
-    }
-  });
-}
+      for (let j = 0; j < photosData[i].comments.length; j++) {
+        bigPictureComments.innerHTML += `
+        <li class="social__comment">
+          <img
+              class="social__picture"
+              src="${ photosData[i].comments[j].avatar }"
+              alt="${ photosData[i].comments[j].name }"
+              width="35" height="35">
+          <p class="social__text">${ photosData[i].comments[j].message }</p>
+        </li>
+        `;
+      }
+    });
+  }
+
+};
+
+export {
+  createBigPicture,
+};

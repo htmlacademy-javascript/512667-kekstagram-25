@@ -1,5 +1,5 @@
 import {
-  createThumbs,
-} from './thumb.js';
+  createBigPicture,
+} from './big-pic.js';
 
-createThumbs();
+createBigPicture();
