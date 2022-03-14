@@ -39,6 +39,8 @@ const createRandomArrayFromRangeGenerator = (minValue, maxValue, callback) => Ar
 
 const createArrayGenerator = (arrayLength, callback) => Array.from({ length: arrayLength }, callback);
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 export {
   checkStringLength,
   getRandomPositiveInteger,
@@ -47,4 +49,5 @@ export {
   getRandomArrayElement,
   createRandomArrayFromRangeGenerator,
   createArrayGenerator,
+  isEscapeKey,
 };

@@ -1,5 +1,1 @@
-import {
-  createThumbs,
-} from './thumb.js';
-
-createThumbs();
+import './modal.js';
