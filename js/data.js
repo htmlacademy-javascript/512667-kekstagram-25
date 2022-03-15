@@ -54,7 +54,7 @@ const DESCRIPTIONS = [
   'Авто на затопленной дороге и бегемот с открытой пастью в воде',
 ];
 
-// const MAXIMUM_STRING_LENGTH = 140;
+const MAXIMUM_STRING_LENGTH = 140;
 
 const MAXIMUM_COMMENTS = 2;
 const MINIMUM_COMMENTS = 1;
@@ -96,4 +96,5 @@ const createAllPhotosData = () => createArrayGenerator(MAXIMUM_PHOTOS, createPho
 
 export {
   createAllPhotosData,
+  MAXIMUM_STRING_LENGTH,
 };
