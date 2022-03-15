@@ -21,25 +21,40 @@ const onModalEscKeydown = (evt) => {
   }
 };
 
+const addBodyClass = () => {
+  bodyElement.classList.add('modal-open');
+};
+
+const removeBodyClass = () => {
+  bodyElement.classList.remove('modal-open');
+};
+
 const openModal = () => {
   modalElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  addBodyClass();
 
   document.addEventListener('keydown', onModalEscKeydown);
 };
 
 function closeModal () {
   modalElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  removeBodyClass();
 
   document.removeEventListener('keydown', onModalEscKeydown);
 }
 
-modalOpenElement.addEventListener('click', () => {
-  openModal();
+modalOpenElement.addEventListener('click', (evt) => {
+  if (evt.target.className === 'picture__img') {
+    openModal();
+  }
 });
 
 modalCloseElement.addEventListener('click', () => {
   clearPicture(modalElement);
   closeModal();
 });
+
+export {
+  addBodyClass,
+  removeBodyClass,
+};
