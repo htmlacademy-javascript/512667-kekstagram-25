@@ -37,34 +37,6 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-const showImage = () => {
-  addBodyClass();
-  overlay.classList.remove('hidden');
-
-  cancel.addEventListener('click', hideImage);
-  text.addEventListener('change', checkValidateSubmit);
-  form.addEventListener('submit', checkValidateForm);
-  description.addEventListener('keydown', stopEscPropagation);
-  hashtags.addEventListener('keydown', stopEscPropagation);
-
-  document.addEventListener('keydown', onPopupEscKeydown);
-};
-
-function hideImage () {
-  removeBodyClass();
-  overlay.classList.add('hidden');
-
-  cancel.removeEventListener('click', hideImage);
-  text.removeEventListener('change', checkValidateSubmit);
-  form.removeEventListener('submit', checkValidateForm);
-  description.removeEventListener('keydown', stopEscPropagation);
-  hashtags.removeEventListener('keydown', stopEscPropagation);
-
-  document.removeEventListener('keydown', onPopupEscKeydown);
-}
-
-control.addEventListener('click', showImage);
-
 const pristine = new Pristine(form, {
   classTo: 'text',
   errorClass: 'text--invalid',
@@ -135,15 +107,15 @@ pristine.addValidator(
   'Имя хэштега включает только буквы и цифры'
 );
 
-function checkValidateForm (evt) {
+const checkValidateForm = (evt) => {
   const isValid = pristine.validate();
 
   if (!isValid) {
     evt.preventDefault();
   }
-}
+};
 
-function checkValidateSubmit () {
+const checkValidateSubmit = () => {
   if (text.classList.contains('text--invalid')) {
     submit.classList.add('.img-upload__submit--disabled');
     submit.disabled = true;
@@ -151,4 +123,32 @@ function checkValidateSubmit () {
     submit.classList.remove('.img-upload__submit--disabled');
     submit.disabled = false;
   }
+};
+
+const showImage = () => {
+  addBodyClass();
+  overlay.classList.remove('hidden');
+
+  cancel.addEventListener('click', hideImage);
+  text.addEventListener('change', checkValidateSubmit);
+  form.addEventListener('submit', checkValidateForm);
+  description.addEventListener('keydown', stopEscPropagation);
+  hashtags.addEventListener('keydown', stopEscPropagation);
+
+  document.addEventListener('keydown', onPopupEscKeydown);
+};
+
+function hideImage () {
+  removeBodyClass();
+  overlay.classList.add('hidden');
+
+  cancel.removeEventListener('click', hideImage);
+  text.removeEventListener('change', checkValidateSubmit);
+  form.removeEventListener('submit', checkValidateForm);
+  description.removeEventListener('keydown', stopEscPropagation);
+  hashtags.removeEventListener('keydown', stopEscPropagation);
+
+  document.removeEventListener('keydown', onPopupEscKeydown);
 }
+
+control.addEventListener('click', showImage);
