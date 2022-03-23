@@ -153,4 +153,5 @@ export {
   clearPicture,
   addNewComments,
   commentsLoader,
+  COMMENTS_LOADING_STEP,
 };
