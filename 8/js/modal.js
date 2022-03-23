@@ -3,6 +3,7 @@ import {
   clearPicture,
   addNewComments,
   commentsLoader,
+  COMMENTS_LOADING_STEP,
 } from './picture.js';
 
 import {
@@ -36,7 +37,10 @@ const openModal = () => {
   addBodyClass();
 
   document.addEventListener('keydown', onModalEscKeydown);
-  commentsLoader.addEventListener('click', addNewComments);
+
+  if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
+    commentsLoader.addEventListener('click', addNewComments);
+  }
 };
 
 function closeModal () {
@@ -44,7 +48,10 @@ function closeModal () {
   removeBodyClass();
 
   document.removeEventListener('keydown', onModalEscKeydown);
-  commentsLoader.removeEventListener('click', addNewComments);
+
+  if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
+    commentsLoader.removeEventListener('click', addNewComments);
+  }
 }
 
 modalOpenElement.addEventListener('click', (evt) => {
