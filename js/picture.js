@@ -12,6 +12,46 @@ const pictures = document.querySelectorAll('.picture');
 const commentsCounter = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 
+const addNewComments = () => {
+
+  const socialComments = document.querySelectorAll('.social__comment');
+  const commentsLength = socialComments.length;
+
+  let commentsHiddenCounter = 0;
+  let commentsShownCounter = 0;
+
+  for (let i = 0; i < commentsLength; i++) {
+    if (socialComments[i].classList.contains('hidden')) {
+      socialComments[i].classList.remove('hidden');
+      commentsHiddenCounter += 1;
+    } else {
+      commentsShownCounter += 1;
+    }
+
+    if (commentsHiddenCounter >= COMMENTS_LOADING_STEP) {
+      break;
+    }
+  }
+
+  commentsCounter.innerHTML = '';
+
+  if (commentsLength > commentsHiddenCounter + commentsShownCounter) {
+    commentsCounter.innerHTML = `
+      ${ commentsHiddenCounter + commentsShownCounter } из
+      <span class="comments-count">${ commentsLength }</span>
+       комментариев
+    `;
+  } else {
+    commentsCounter.innerHTML = `
+      ${ commentsLength } из
+      <span class="comments-count">${ commentsLength }</span>
+       комментариев
+    `;
+
+    commentsLoader.classList.add('hidden');
+  }
+};
+
 const renderPicture = (element) => {
 
   for (let i = 0; i < photosData.length; i++) {
@@ -65,6 +105,7 @@ const renderPicture = (element) => {
 
   }
 
+  commentsLoader.addEventListener('click', addNewComments);
 };
 
 const clearPicture = (element) => {
@@ -107,47 +148,6 @@ const clearPicture = (element) => {
   `;
 
 };
-
-commentsLoader.addEventListener('click', (evt) => {
-  evt.preventDefault();
-
-  const socialComments = document.querySelectorAll('.social__comment');
-  const commentsLength = socialComments.length;
-
-  let commentsHiddenCounter = 0;
-  let commentsShownCounter = 0;
-
-  for (let i = 0; i < commentsLength; i++) {
-    if (socialComments[i].classList.contains('hidden')) {
-      socialComments[i].classList.remove('hidden');
-      commentsHiddenCounter += 1;
-    } else {
-      commentsShownCounter += 1;
-    }
-
-    if (commentsHiddenCounter >= COMMENTS_LOADING_STEP) {
-      break;
-    }
-  }
-
-  commentsCounter.innerHTML = '';
-
-  if (commentsLength > commentsHiddenCounter + commentsShownCounter) {
-    commentsCounter.innerHTML = `
-      ${ commentsHiddenCounter + commentsShownCounter } из
-      <span class="comments-count">${ commentsLength }</span>
-       комментариев
-    `;
-  } else {
-    commentsCounter.innerHTML = `
-      ${ commentsLength } из
-      <span class="comments-count">${ commentsLength }</span>
-       комментариев
-    `;
-
-    commentsLoader.classList.add('hidden');
-  }
-});
 
 export {
   renderPicture,
