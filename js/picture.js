@@ -105,7 +105,6 @@ const renderPicture = (element) => {
 
   }
 
-  commentsLoader.addEventListener('click', addNewComments);
 };
 
 const clearPicture = (element) => {
@@ -152,4 +151,6 @@ const clearPicture = (element) => {
 export {
   renderPicture,
   clearPicture,
+  addNewComments,
+  commentsLoader,
 };
