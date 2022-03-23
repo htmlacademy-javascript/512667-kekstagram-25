@@ -1,6 +1,8 @@
 import {
   renderPicture,
   clearPicture,
+  addNewComments,
+  commentsLoader,
 } from './picture.js';
 
 import {
@@ -34,6 +36,7 @@ const openModal = () => {
   addBodyClass();
 
   document.addEventListener('keydown', onModalEscKeydown);
+  commentsLoader.addEventListener('click', addNewComments);
 };
 
 function closeModal () {
@@ -41,6 +44,7 @@ function closeModal () {
   removeBodyClass();
 
   document.removeEventListener('keydown', onModalEscKeydown);
+  commentsLoader.removeEventListener('click', addNewComments);
 }
 
 modalOpenElement.addEventListener('click', (evt) => {
