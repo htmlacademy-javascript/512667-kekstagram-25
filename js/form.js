@@ -36,6 +36,118 @@ const controlBigger = scale.querySelector('.scale__control--bigger');
 const controlValue = scale.querySelector('.scale__control--value');
 
 const previewImg = form.querySelector('.img-upload__preview > img');
+const effectsList = form.querySelector('.effects__list');
+
+const effectLevel = form.querySelector('.effect-level');
+const sliderElement = effectLevel.querySelector('.effect-level__slider');
+const valueElement = effectLevel.querySelector('.effect-level__value');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100,
+  },
+  start: 100,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  valueElement.value = sliderElement.noUiSlider.get();
+
+  if (previewImg.className === 'effects__preview--chrome') {
+    previewImg.style.filter = `grayscale(${ valueElement.value })`;
+  } else if (previewImg.className === 'effects__preview--sepia') {
+    previewImg.style.filter = `sepia(${ valueElement.value })`;
+  } else if (previewImg.className === 'effects__preview--marvin') {
+    previewImg.style.filter = `invert(${ valueElement.value }%)`;
+  } else if (previewImg.className === 'effects__preview--phobos') {
+    previewImg.style.filter = `blur(${ valueElement.value }px)`;
+  } else if (previewImg.className === 'effects__preview--heat') {
+    previewImg.style.filter = `brightness(${ valueElement.value })`;
+  } else {
+    effectLevel.style.display = 'none';
+    sliderElement.setAttribute('disabled', true);
+    previewImg.style.filter = 'none';
+  }
+});
+
+const setEffects = () => {
+  previewImg.className = '';
+  previewImg.classList.add(`effects__preview--${ form.elements.effect.value }`);
+
+  const effectsSettings = {
+    none: {
+      range: {
+        min: 0,
+        max: 0,
+      },
+      step: 0,
+      start: 0,
+    },
+    chrome: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+      start: 1,
+    },
+    sepia: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+      start: 1,
+    },
+    marvin: {
+      range: {
+        min: 0,
+        max: 100,
+      },
+      step: 1,
+      start: 100,
+    },
+    phobos: {
+      range: {
+        min: 0,
+        max: 3,
+      },
+      step: 0.1,
+      start: 3,
+    },
+    heat: {
+      range: {
+        min: 1,
+        max: 3,
+      },
+      step: 0.1,
+      start: 3,
+    }
+  };
+
+  effectLevel.style.display = 'block';
+  sliderElement.removeAttribute('disabled');
+  sliderElement.noUiSlider.updateOptions(effectsSettings[form.elements.effect.value]);
+};
+
+const setDefaultEffects = () => {
+  valueElement.value = 100;
+  effectLevel.style.display = 'none';
+  previewImg.classList.add('effects__preview--none');
+};
 
 const changeControlSmaller = () => {
   const currentValue = parseFloat(controlValue.value);
@@ -167,6 +279,9 @@ const showImage = () => {
   controlSmaller.addEventListener('click', changeControlSmaller);
   controlBigger.addEventListener('click', changeControlBigger);
 
+  setDefaultEffects();
+  effectsList.addEventListener('change', setEffects);
+
   cancel.addEventListener('click', hideImage);
   text.addEventListener('change', checkValidateSubmit);
   form.addEventListener('submit', checkValidateForm);
@@ -182,6 +297,8 @@ function hideImage () {
 
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
+
+  effectsList.removeEventListener('change', setEffects);
 
   cancel.removeEventListener('click', hideImage);
   text.removeEventListener('change', checkValidateSubmit);
