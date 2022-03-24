@@ -47,6 +47,9 @@ function closeModal () {
   modalElement.classList.add('hidden');
   removeBodyClass();
 
+  clearPicture(modalElement);
+  modalCloseElement.removeEventListener('click', closeModal);
+
   document.removeEventListener('keydown', onModalEscKeydown);
 
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
@@ -58,11 +61,8 @@ modalOpenElement.addEventListener('click', (evt) => {
   if (evt.target.className === 'picture__img') {
     openModal();
   }
-});
 
-modalCloseElement.addEventListener('click', () => {
-  clearPicture(modalElement);
-  closeModal();
+  modalCloseElement.addEventListener('click', closeModal);
 });
 
 export {
