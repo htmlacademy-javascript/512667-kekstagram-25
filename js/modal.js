@@ -1,6 +1,9 @@
 import {
   renderPicture,
   clearPicture,
+  addNewComments,
+  commentsLoader,
+  COMMENTS_LOADING_STEP,
 } from './picture.js';
 
 import {
@@ -34,24 +37,31 @@ const openModal = () => {
   addBodyClass();
 
   document.addEventListener('keydown', onModalEscKeydown);
+  modalCloseElement.addEventListener('click', closeModal);
+
+  if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
+    commentsLoader.addEventListener('click', addNewComments);
+  }
 };
 
 function closeModal () {
   modalElement.classList.add('hidden');
   removeBodyClass();
 
+  clearPicture(modalElement);
+  modalCloseElement.removeEventListener('click', closeModal);
+
   document.removeEventListener('keydown', onModalEscKeydown);
+
+  if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
+    commentsLoader.removeEventListener('click', addNewComments);
+  }
 }
 
 modalOpenElement.addEventListener('click', (evt) => {
   if (evt.target.className === 'picture__img') {
     openModal();
   }
-});
-
-modalCloseElement.addEventListener('click', () => {
-  clearPicture(modalElement);
-  closeModal();
 });
 
 export {
