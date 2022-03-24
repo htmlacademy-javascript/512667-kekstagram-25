@@ -21,13 +21,13 @@ const form = document.querySelector('.img-upload__form');
 form.action = 'https://25.javascript.pages.academy/kekstagram';
 
 const overlay = form.querySelector('.img-upload__overlay');
-const control = form.querySelector('.img-upload__control');
 const cancel = form.querySelector('.img-upload__cancel');
 
 const description = form.querySelector('.text__description');
 const hashtags = form.querySelector('.text__hashtags');
 
 const text = form.querySelector('.text');
+const file = form.querySelector('#upload-file');
 const submit = form.querySelector('#upload-submit');
 
 const onPopupEscKeydown = (evt) => {
@@ -151,4 +151,4 @@ function hideImage () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-control.addEventListener('click', showImage);
+file.addEventListener('change', showImage);
