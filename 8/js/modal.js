@@ -37,6 +37,7 @@ const openModal = () => {
   addBodyClass();
 
   document.addEventListener('keydown', onModalEscKeydown);
+  modalCloseElement.addEventListener('click', closeModal);
 
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
     commentsLoader.addEventListener('click', addNewComments);
@@ -61,8 +62,6 @@ modalOpenElement.addEventListener('click', (evt) => {
   if (evt.target.className === 'picture__img') {
     openModal();
   }
-
-  modalCloseElement.addEventListener('click', closeModal);
 });
 
 export {
