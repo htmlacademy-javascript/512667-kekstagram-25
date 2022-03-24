@@ -30,6 +30,40 @@ const text = form.querySelector('.text');
 const file = form.querySelector('#upload-file');
 const submit = form.querySelector('#upload-submit');
 
+const scale = form.querySelector('.scale');
+const controlSmaller = scale.querySelector('.scale__control--smaller');
+const controlBigger = scale.querySelector('.scale__control--bigger');
+const controlValue = scale.querySelector('.scale__control--value');
+
+const previewImg = form.querySelector('.img-upload__preview > img');
+
+const changeControlSmaller = () => {
+  const currentValue = parseFloat(controlValue.value);
+
+  if (currentValue > 25) {
+    controlValue.value = `${ currentValue - 25 }%`;
+    previewImg.style.transform = `scale(${ (currentValue - 25)/100 })`;
+  } else {
+    controlValue.value = '25%';
+  }
+};
+
+const changeControlBigger = () => {
+  const currentValue = parseFloat(controlValue.value);
+
+  if (currentValue < 100) {
+    controlValue.value = `${ currentValue + 25 }%`;
+    previewImg.style.transform = `scale(${ (currentValue + 25)/100 })`;
+  } else {
+    controlValue.value = '100%';
+  }
+};
+
+const setControlValue = () => {
+  controlValue.value = '100%';
+  previewImg.style.transform = 'scale(1)';
+};
+
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -129,6 +163,10 @@ const showImage = () => {
   addBodyClass();
   overlay.classList.remove('hidden');
 
+  setControlValue();
+  controlSmaller.addEventListener('click', changeControlSmaller);
+  controlBigger.addEventListener('click', changeControlBigger);
+
   cancel.addEventListener('click', hideImage);
   text.addEventListener('change', checkValidateSubmit);
   form.addEventListener('submit', checkValidateForm);
@@ -141,6 +179,9 @@ const showImage = () => {
 function hideImage () {
   removeBodyClass();
   overlay.classList.add('hidden');
+
+  controlSmaller.removeEventListener('click', changeControlSmaller);
+  controlBigger.removeEventListener('click', changeControlBigger);
 
   cancel.removeEventListener('click', hideImage);
   text.removeEventListener('change', checkValidateSubmit);
