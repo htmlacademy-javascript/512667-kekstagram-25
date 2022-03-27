@@ -15,8 +15,6 @@ const modalElement = document.querySelector('.big-picture');
 const modalOpenElement = document.querySelector('.pictures');
 const modalCloseElement = modalElement.querySelector('#picture-cancel');
 
-renderPicture(modalElement);
-
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -59,7 +57,11 @@ function closeModal () {
 }
 
 modalOpenElement.addEventListener('click', (evt) => {
-  if (evt.target.className === 'picture__img') {
+  if (evt.target.className.match('picture__img')) {
+
+    const id = parseFloat(evt.target.id);
+    renderPicture(modalElement, id - 1);
+
     openModal();
   }
 });
