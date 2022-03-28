@@ -58,9 +58,11 @@ function closeModal () {
 
 modalOpenElement.addEventListener('click', (evt) => {
   if (evt.target.className.match('picture__img')) {
+    evt.preventDefault();
 
-    const id = parseFloat(evt.target.id);
-    renderPicture(modalElement, id - 1);
+    const targetId = evt.target.id;
+    const pictureId = parseFloat(targetId.slice('picture-'.length)).toFixed(0) - 1;
+    renderPicture(modalElement, pictureId);
 
     openModal();
   }

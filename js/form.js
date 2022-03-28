@@ -51,35 +51,40 @@ noUiSlider.create(sliderElement, {
   step: 1,
   connect: 'lower',
   format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
+    to: (value) => (Number.isInteger(value)) ? value.toFixed(0) : value.toFixed(1),
+    from: (value) => parseFloat(value),
   },
 });
 
 sliderElement.noUiSlider.on('update', () => {
   valueElement.value = sliderElement.noUiSlider.get();
 
-  if (previewImg.className === 'effects__preview--chrome') {
-    previewImg.style.filter = `grayscale(${ valueElement.value })`;
-  } else if (previewImg.className === 'effects__preview--sepia') {
-    previewImg.style.filter = `sepia(${ valueElement.value })`;
-  } else if (previewImg.className === 'effects__preview--marvin') {
-    previewImg.style.filter = `invert(${ valueElement.value }%)`;
-  } else if (previewImg.className === 'effects__preview--phobos') {
-    previewImg.style.filter = `blur(${ valueElement.value }px)`;
-  } else if (previewImg.className === 'effects__preview--heat') {
-    previewImg.style.filter = `brightness(${ valueElement.value })`;
-  } else {
-    effectLevel.style.display = 'none';
-    sliderElement.setAttribute('disabled', true);
-    previewImg.style.filter = 'none';
+  switch (previewImg.className) {
+    case 'effects__preview--chrome': {
+      previewImg.style.filter = `grayscale(${ valueElement.value })`;
+      break;
+    }
+    case 'effects__preview--sepia': {
+      previewImg.style.filter = `sepia(${ valueElement.value })`;
+      break;
+    }
+    case 'effects__preview--marvin': {
+      previewImg.style.filter = `invert(${ valueElement.value }%)`;
+      break;
+    }
+    case 'effects__preview--phobos': {
+      previewImg.style.filter = `blur(${ valueElement.value }px)`;
+      break;
+    }
+    case 'effects__preview--heat': {
+      previewImg.style.filter = `brightness(${ valueElement.value })`;
+      break;
+    }
+    default: {
+      effectLevel.style.display = 'none';
+      sliderElement.setAttribute('disabled', true);
+      previewImg.style.filter = 'none';
+    }
   }
 });
 
