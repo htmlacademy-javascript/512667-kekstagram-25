@@ -21,14 +21,165 @@ const form = document.querySelector('.img-upload__form');
 form.action = 'https://25.javascript.pages.academy/kekstagram';
 
 const overlay = form.querySelector('.img-upload__overlay');
-const control = form.querySelector('.img-upload__control');
 const cancel = form.querySelector('.img-upload__cancel');
 
 const description = form.querySelector('.text__description');
 const hashtags = form.querySelector('.text__hashtags');
 
 const text = form.querySelector('.text');
+const file = form.querySelector('#upload-file');
 const submit = form.querySelector('#upload-submit');
+
+const scale = form.querySelector('.scale');
+const controlSmaller = scale.querySelector('.scale__control--smaller');
+const controlBigger = scale.querySelector('.scale__control--bigger');
+const controlValue = scale.querySelector('.scale__control--value');
+
+const previewImg = form.querySelector('.img-upload__preview > img');
+const effectsList = form.querySelector('.effects__list');
+
+const effectLevel = form.querySelector('.effect-level');
+const sliderElement = effectLevel.querySelector('.effect-level__slider');
+const valueElement = effectLevel.querySelector('.effect-level__value');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100,
+  },
+  start: 100,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: (value) => (Number.isInteger(value)) ? value.toFixed(0) : value.toFixed(1),
+    from: (value) => parseFloat(value),
+  },
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  valueElement.value = sliderElement.noUiSlider.get();
+
+  switch (previewImg.className) {
+    case 'effects__preview--chrome': {
+      previewImg.style.filter = `grayscale(${ valueElement.value })`;
+      break;
+    }
+    case 'effects__preview--sepia': {
+      previewImg.style.filter = `sepia(${ valueElement.value })`;
+      break;
+    }
+    case 'effects__preview--marvin': {
+      previewImg.style.filter = `invert(${ valueElement.value }%)`;
+      break;
+    }
+    case 'effects__preview--phobos': {
+      previewImg.style.filter = `blur(${ valueElement.value }px)`;
+      break;
+    }
+    case 'effects__preview--heat': {
+      previewImg.style.filter = `brightness(${ valueElement.value })`;
+      break;
+    }
+    default: {
+      effectLevel.style.display = 'none';
+      sliderElement.setAttribute('disabled', true);
+      previewImg.style.filter = 'none';
+    }
+  }
+});
+
+const setEffects = () => {
+  previewImg.className = '';
+  previewImg.classList.add(`effects__preview--${ form.elements.effect.value }`);
+
+  const effectsSettings = {
+    none: {
+      range: {
+        min: 0,
+        max: 0,
+      },
+      step: 0,
+      start: 0,
+    },
+    chrome: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+      start: 1,
+    },
+    sepia: {
+      range: {
+        min: 0,
+        max: 1,
+      },
+      step: 0.1,
+      start: 1,
+    },
+    marvin: {
+      range: {
+        min: 0,
+        max: 100,
+      },
+      step: 1,
+      start: 100,
+    },
+    phobos: {
+      range: {
+        min: 0,
+        max: 3,
+      },
+      step: 0.1,
+      start: 3,
+    },
+    heat: {
+      range: {
+        min: 1,
+        max: 3,
+      },
+      step: 0.1,
+      start: 3,
+    }
+  };
+
+  effectLevel.style.display = 'block';
+  sliderElement.removeAttribute('disabled');
+  sliderElement.noUiSlider.updateOptions(effectsSettings[form.elements.effect.value]);
+};
+
+const setDefaultEffects = () => {
+  valueElement.value = 100;
+  effectLevel.style.display = 'none';
+  previewImg.classList.add('effects__preview--none');
+};
+
+const changeControlSmaller = () => {
+  const currentValue = parseFloat(controlValue.value);
+
+  if (currentValue > 25) {
+    controlValue.value = `${ currentValue - 25 }%`;
+    previewImg.style.transform = `scale(${ (currentValue - 25)/100 })`;
+  } else {
+    controlValue.value = '25%';
+  }
+};
+
+const changeControlBigger = () => {
+  const currentValue = parseFloat(controlValue.value);
+
+  if (currentValue < 100) {
+    controlValue.value = `${ currentValue + 25 }%`;
+    previewImg.style.transform = `scale(${ (currentValue + 25)/100 })`;
+  } else {
+    controlValue.value = '100%';
+  }
+};
+
+const setControlValue = () => {
+  controlValue.value = '100%';
+  previewImg.style.transform = 'scale(1)';
+};
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -129,6 +280,13 @@ const showImage = () => {
   addBodyClass();
   overlay.classList.remove('hidden');
 
+  setControlValue();
+  controlSmaller.addEventListener('click', changeControlSmaller);
+  controlBigger.addEventListener('click', changeControlBigger);
+
+  setDefaultEffects();
+  effectsList.addEventListener('change', setEffects);
+
   cancel.addEventListener('click', hideImage);
   text.addEventListener('change', checkValidateSubmit);
   form.addEventListener('submit', checkValidateForm);
@@ -142,6 +300,11 @@ function hideImage () {
   removeBodyClass();
   overlay.classList.add('hidden');
 
+  controlSmaller.removeEventListener('click', changeControlSmaller);
+  controlBigger.removeEventListener('click', changeControlBigger);
+
+  effectsList.removeEventListener('change', setEffects);
+
   cancel.removeEventListener('click', hideImage);
   text.removeEventListener('change', checkValidateSubmit);
   form.removeEventListener('submit', checkValidateForm);
@@ -151,4 +314,4 @@ function hideImage () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-control.addEventListener('click', showImage);
+file.addEventListener('change', showImage);
