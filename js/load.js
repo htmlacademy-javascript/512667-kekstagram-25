@@ -3,6 +3,10 @@ import {
   renderThumbs,
 } from './thumb.js';
 
+import {
+  showAlert,
+} from './util.js';
+
 const createLoader = () => {
   fetch(
     'https://25.javascript.pages.academy/kekstagram/data',
@@ -21,12 +25,11 @@ const createLoader = () => {
     .then((photos) => {
       getPhotosData(photos);
       renderThumbs(photos);
+
+      showAlert('Все данные успешно загружены. Поздравляем!', 'green');
     })
-    .catch((err) => {
-      document.querySelector('body').classList.add('overlay');
-      document.querySelector('body').style.textAlign = 'center';
-      document.querySelector('body').textContent = err.message;
-      document.querySelector('body').textContent += ' - То есть, что-то пошло не так!';
+    .catch(() => {
+      showAlert('Не удалось загрузить данные. Что-то пошло не так', 'red');
     });
 };
 

@@ -6,6 +6,7 @@ import {
 import {
   isEscapeKey,
   stopEscPropagation,
+  showAlert,
 } from './util.js';
 
 const MAXIMUM_STRING_LENGTH = 140;
@@ -147,7 +148,11 @@ const setEffects = () => {
 
 const setDefaultEffects = () => {
   valueElement.value = 100;
+  controlValue.value = '100%';
   effectLevel.style.display = 'none';
+  previewImg.style.filter = 'none';
+  previewImg.style.transform = 'scale(1)';
+  previewImg.className = '';
   previewImg.classList.add('effects__preview--none');
 };
 
@@ -171,11 +176,6 @@ const changeControlBigger = () => {
   } else {
     controlValue.value = '100%';
   }
-};
-
-const setControlValue = () => {
-  controlValue.value = '100%';
-  previewImg.style.transform = 'scale(1)';
 };
 
 const onPopupEscKeydown = (evt) => {
@@ -268,23 +268,43 @@ const checkValidateForm = (evt) => {
         method: 'POST',
         body: formData,
       },
-    );
+    )
+      .then((response) => {
+        if (response.ok) {
+          hideImage();
 
-    hideImage();
+          showAlert('Форма успешно отправлена. Поздравляем!', 'green');
+        } else {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
+        }
+      })
+      .catch(() => {
+        showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
+      });
   }
+};
+
+const blockSubmitButton = () => {
+  uploadSubmit.classList.add('.img-upload__submit--disabled');
+  uploadSubmit.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  uploadSubmit.classList.remove('.img-upload__submit--disabled');
+  uploadSubmit.disabled = false;
 };
 
 const checkValidateSubmit = () => {
   if (text.classList.contains('text--invalid')) {
-    uploadSubmit.classList.add('.img-upload__submit--disabled');
-    uploadSubmit.disabled = true;
+    blockSubmitButton();
   } else if (text.classList.contains('text--valid')) {
-    uploadSubmit.classList.remove('.img-upload__submit--disabled');
-    uploadSubmit.disabled = false;
+    unblockSubmitButton();
   }
 };
 
 const showImage = () => {
+  unblockSubmitButton();
+
   addBodyClass();
   overlay.classList.remove('hidden');
 
@@ -293,11 +313,9 @@ const showImage = () => {
   };
   previewImg.src = URL.createObjectURL(uploadFile.files[0]);
 
-  setControlValue();
+  setDefaultEffects();
   controlSmaller.addEventListener('click', changeControlSmaller);
   controlBigger.addEventListener('click', changeControlBigger);
-
-  setDefaultEffects();
   effectsList.addEventListener('change', setEffects);
 
   cancel.addEventListener('click', hideImage);
@@ -310,14 +328,16 @@ const showImage = () => {
 };
 
 function hideImage () {
+  blockSubmitButton();
+
   removeBodyClass();
   overlay.classList.add('hidden');
 
   previewImg.src = 'img/upload-default-image.jpg';
 
+  setDefaultEffects();
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
-
   effectsList.removeEventListener('change', setEffects);
 
   cancel.removeEventListener('click', hideImage);
