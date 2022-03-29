@@ -24,8 +24,8 @@ const description = form.querySelector('.text__description');
 const hashtags = form.querySelector('.text__hashtags');
 
 const text = form.querySelector('.text');
-const file = form.querySelector('#upload-file');
-const submit = form.querySelector('#upload-submit');
+const uploadFile = form.querySelector('#upload-file');
+const uploadSubmit = form.querySelector('#upload-submit');
 
 const scale = form.querySelector('.scale');
 const controlSmaller = scale.querySelector('.scale__control--smaller');
@@ -256,26 +256,42 @@ pristine.addValidator(
 );
 
 const checkValidateForm = (evt) => {
-  const isValid = pristine.validate();
+  evt.preventDefault();
 
-  if (!isValid) {
-    evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://25.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
+
+    hideImage();
   }
 };
 
 const checkValidateSubmit = () => {
   if (text.classList.contains('text--invalid')) {
-    submit.classList.add('.img-upload__submit--disabled');
-    submit.disabled = true;
+    uploadSubmit.classList.add('.img-upload__submit--disabled');
+    uploadSubmit.disabled = true;
   } else if (text.classList.contains('text--valid')) {
-    submit.classList.remove('.img-upload__submit--disabled');
-    submit.disabled = false;
+    uploadSubmit.classList.remove('.img-upload__submit--disabled');
+    uploadSubmit.disabled = false;
   }
 };
 
 const showImage = () => {
   addBodyClass();
   overlay.classList.remove('hidden');
+
+  previewImg.onload = () => {
+    URL.revokeObjectURL(previewImg.src);
+  };
+  previewImg.src = URL.createObjectURL(uploadFile.files[0]);
 
   setControlValue();
   controlSmaller.addEventListener('click', changeControlSmaller);
@@ -297,6 +313,8 @@ function hideImage () {
   removeBodyClass();
   overlay.classList.add('hidden');
 
+  previewImg.src = 'img/upload-default-image.jpg';
+
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
 
@@ -311,4 +329,4 @@ function hideImage () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-file.addEventListener('change', showImage);
+uploadFile.addEventListener('change', showImage);
