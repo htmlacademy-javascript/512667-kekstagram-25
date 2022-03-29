@@ -1,5 +1,4 @@
 import {
-  // checkStringLength,
   getRandomPositiveInteger,
   createIdGenerator,
   createRandomIdFromRangeGenerator,
@@ -54,22 +53,16 @@ const DESCRIPTIONS = [
   'Авто на затопленной дороге и бегемот с открытой пастью в воде',
 ];
 
-const MAXIMUM_STRING_LENGTH = 140;
-
 const MAXIMUM_COMMENTS = 15;
 const MINIMUM_COMMENTS = 0;
 
 const MAXIMUM_LIKES = 200;
 const MINIMUM_LIKES = 15;
 
-const MAXIMUM_PHOTOS = DESCRIPTIONS.length; // 25
+const MAXIMUM_PHOTOS = DESCRIPTIONS.length;
 
-const MAXIMUM_NAMES = NAMES.length; // 6
+const MAXIMUM_NAMES = NAMES.length;
 const MINIMUM_NAMES = 1;
-
-// checkStringLength('Комментарий от Кекса', MAXIMUM_STRING_LENGTH);
-
-// getRandomPositiveInteger(0, 5);
 
 const generatePhotoId = createIdGenerator();
 const generatePhotoUrl = createIdGenerator();
@@ -96,5 +89,4 @@ const createAllPhotosData = () => createArrayGenerator(MAXIMUM_PHOTOS, createPho
 
 export {
   createAllPhotosData,
-  MAXIMUM_STRING_LENGTH,
 };

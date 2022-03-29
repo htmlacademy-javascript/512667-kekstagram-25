@@ -1,5 +1,3 @@
-const checkStringLength = (string, length) => string.length <= length;
-
 const getRandomPositiveInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
@@ -48,7 +46,6 @@ const stopEscPropagation = (evt) => {
 };
 
 export {
-  checkStringLength,
   getRandomPositiveInteger,
   createIdGenerator,
   createRandomIdFromRangeGenerator,

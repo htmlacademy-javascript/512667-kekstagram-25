@@ -8,10 +8,7 @@ import {
   stopEscPropagation,
 } from './util.js';
 
-import {
-  MAXIMUM_STRING_LENGTH,
-} from './data.js';
-
+const MAXIMUM_STRING_LENGTH = 140;
 const MAXIMUM_HASHTAG_LENGTH = 20;
 const MAXIMUM_HASHTAGS = 5;
 
