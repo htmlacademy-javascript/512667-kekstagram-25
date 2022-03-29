@@ -1,11 +1,8 @@
 import {
-  createThumbs,
   photosData,
 } from './thumb.js';
 
 const COMMENTS_LOADING_STEP = 5;
-
-createThumbs();
 
 const commentsCounter = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');

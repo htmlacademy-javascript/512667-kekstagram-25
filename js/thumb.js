@@ -1,32 +1,32 @@
-import {
-  createAllPhotosData,
-} from './data.js';
+let photosData = [];
 
-const photosData = createAllPhotosData();
+const renderThumbs = (value) => {
+  const picture = document.querySelector('.pictures');
+  const templateFragment = document.querySelector('#picture').content;
+  const template = templateFragment.querySelector('.picture');
+  const fragment = document.createDocumentFragment();
 
-const picture = document.querySelector('.pictures');
+  value.forEach(({id, url, description, comments, likes}) => {
+    const element = template.cloneNode(true);
 
-const templateFragment = document.querySelector('#picture').content;
+    element.querySelector('.picture__img').src = url;
+    element.querySelector('.picture__img').alt = description;
+    element.querySelector('.picture__img').id = `picture-${ id }`;
+    element.querySelector('.picture__comments').textContent = comments.length;
+    element.querySelector('.picture__likes').textContent = likes;
 
-const template = templateFragment.querySelector('.picture');
+    fragment.appendChild(element);
+  });
 
-const fragment = document.createDocumentFragment();
+  picture.appendChild(fragment);
+};
 
-photosData.forEach(({id, url, description, comments, likes}) => {
-  const element = template.cloneNode(true);
-
-  element.querySelector('.picture__img').src = url;
-  element.querySelector('.picture__img').alt = description;
-  element.querySelector('.picture__img').id = `picture-${ id }`;
-  element.querySelector('.picture__comments').textContent = comments.length;
-  element.querySelector('.picture__likes').textContent = likes;
-
-  fragment.appendChild(element);
-});
-
-const createThumbs = () => picture.appendChild(fragment);
+const getPhotosData = (value) => {
+  photosData = value;
+};
 
 export {
-  createThumbs,
+  getPhotosData,
+  renderThumbs,
   photosData,
 };
