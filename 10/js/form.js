@@ -25,8 +25,8 @@ const description = form.querySelector('.text__description');
 const hashtags = form.querySelector('.text__hashtags');
 
 const text = form.querySelector('.text');
-const uploadFile = form.querySelector('#upload-file');
-const uploadSubmit = form.querySelector('#upload-submit');
+const file = form.querySelector('#upload-file');
+const submit = form.querySelector('#upload-submit');
 
 const scale = form.querySelector('.scale');
 const controlSmaller = scale.querySelector('.scale__control--smaller');
@@ -285,13 +285,13 @@ const checkValidateForm = (evt) => {
 };
 
 const blockSubmitButton = () => {
-  uploadSubmit.classList.add('.img-upload__submit--disabled');
-  uploadSubmit.disabled = true;
+  submit.classList.add('.img-upload__submit--disabled');
+  submit.disabled = true;
 };
 
 const unblockSubmitButton = () => {
-  uploadSubmit.classList.remove('.img-upload__submit--disabled');
-  uploadSubmit.disabled = false;
+  submit.classList.remove('.img-upload__submit--disabled');
+  submit.disabled = false;
 };
 
 const checkValidateSubmit = () => {
@@ -311,7 +311,7 @@ const showImage = () => {
   previewImg.onload = () => {
     URL.revokeObjectURL(previewImg.src);
   };
-  previewImg.src = URL.createObjectURL(uploadFile.files[0]);
+  previewImg.src = URL.createObjectURL(file.files[0]);
 
   setDefaultEffects();
   controlSmaller.addEventListener('click', changeControlSmaller);
@@ -349,4 +349,4 @@ function hideImage () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-uploadFile.addEventListener('change', showImage);
+file.addEventListener('change', showImage);
