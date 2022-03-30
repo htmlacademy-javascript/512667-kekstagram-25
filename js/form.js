@@ -6,12 +6,10 @@ import {
 import {
   isEscapeKey,
   stopEscPropagation,
+  showAlert,
 } from './util.js';
 
-import {
-  MAXIMUM_STRING_LENGTH,
-} from './data.js';
-
+const MAXIMUM_STRING_LENGTH = 140;
 const MAXIMUM_HASHTAG_LENGTH = 20;
 const MAXIMUM_HASHTAGS = 5;
 
@@ -150,7 +148,11 @@ const setEffects = () => {
 
 const setDefaultEffects = () => {
   valueElement.value = 100;
+  controlValue.value = '100%';
   effectLevel.style.display = 'none';
+  previewImg.style.filter = 'none';
+  previewImg.style.transform = 'scale(1)';
+  previewImg.className = '';
   previewImg.classList.add('effects__preview--none');
 };
 
@@ -174,11 +176,6 @@ const changeControlBigger = () => {
   } else {
     controlValue.value = '100%';
   }
-};
-
-const setControlValue = () => {
-  controlValue.value = '100%';
-  previewImg.style.transform = 'scale(1)';
 };
 
 const onPopupEscKeydown = (evt) => {
@@ -259,32 +256,66 @@ pristine.addValidator(
 );
 
 const checkValidateForm = (evt) => {
-  const isValid = pristine.validate();
+  evt.preventDefault();
 
-  if (!isValid) {
-    evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://25.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          hideImage();
+
+          showAlert('Форма успешно отправлена. Поздравляем!', 'green');
+        } else {
+          showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
+        }
+      })
+      .catch(() => {
+        showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
+      });
   }
+};
+
+const blockSubmitButton = () => {
+  submit.classList.add('.img-upload__submit--disabled');
+  submit.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  submit.classList.remove('.img-upload__submit--disabled');
+  submit.disabled = false;
 };
 
 const checkValidateSubmit = () => {
   if (text.classList.contains('text--invalid')) {
-    submit.classList.add('.img-upload__submit--disabled');
-    submit.disabled = true;
+    blockSubmitButton();
   } else if (text.classList.contains('text--valid')) {
-    submit.classList.remove('.img-upload__submit--disabled');
-    submit.disabled = false;
+    unblockSubmitButton();
   }
 };
 
 const showImage = () => {
+  unblockSubmitButton();
+
   addBodyClass();
   overlay.classList.remove('hidden');
 
-  setControlValue();
-  controlSmaller.addEventListener('click', changeControlSmaller);
-  controlBigger.addEventListener('click', changeControlBigger);
+  previewImg.onload = () => {
+    URL.revokeObjectURL(previewImg.src);
+  };
+  previewImg.src = URL.createObjectURL(file.files[0]);
 
   setDefaultEffects();
+  controlSmaller.addEventListener('click', changeControlSmaller);
+  controlBigger.addEventListener('click', changeControlBigger);
   effectsList.addEventListener('change', setEffects);
 
   cancel.addEventListener('click', hideImage);
@@ -297,12 +328,16 @@ const showImage = () => {
 };
 
 function hideImage () {
+  blockSubmitButton();
+
   removeBodyClass();
   overlay.classList.add('hidden');
 
+  previewImg.src = 'img/upload-default-image.jpg';
+
+  setDefaultEffects();
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
-
   effectsList.removeEventListener('change', setEffects);
 
   cancel.removeEventListener('click', hideImage);
