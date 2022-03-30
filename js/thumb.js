@@ -11,7 +11,7 @@ const renderThumbs = (value) => {
 
     element.querySelector('.picture__img').src = url;
     element.querySelector('.picture__img').alt = description;
-    element.querySelector('.picture__img').id = `picture-${ id }`;
+    element.querySelector('.picture__img').id = `picture-${ id + 1 }`;
     element.querySelector('.picture__comments').textContent = comments.length;
     element.querySelector('.picture__likes').textContent = likes;
 
