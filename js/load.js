@@ -7,6 +7,10 @@ import {
   showAlert,
 } from './util.js';
 
+import {
+  showFilterMenu,
+} from './filter.js';
+
 const createLoader = () => {
   fetch(
     'https://25.javascript.pages.academy/kekstagram/data',
@@ -25,6 +29,8 @@ const createLoader = () => {
     .then((photos) => {
       getPhotosData(photos);
       renderThumbs(photos);
+
+      showFilterMenu();
 
       showAlert('Все данные успешно загружены. Поздравляем!', 'green');
     })
