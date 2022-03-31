@@ -15,8 +15,9 @@ const MAXIMUM_HASHTAGS = 5;
 
 const REGEX_SYMBOLS = /^#[\dA-Za-zА-Яа-яЁё0-9]{1,}$/;
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 const form = document.querySelector('.img-upload__form');
-form.action = 'https://25.javascript.pages.academy/kekstagram';
 
 const overlay = form.querySelector('.img-upload__overlay');
 const cancel = form.querySelector('.img-upload__cancel');
@@ -25,7 +26,7 @@ const description = form.querySelector('.text__description');
 const hashtags = form.querySelector('.text__hashtags');
 
 const text = form.querySelector('.text');
-const file = form.querySelector('#upload-file');
+const fileChooser = form.querySelector('#upload-file');
 const submit = form.querySelector('#upload-submit');
 
 const scale = form.querySelector('.scale');
@@ -39,6 +40,10 @@ const effectsList = form.querySelector('.effects__list');
 const effectLevel = form.querySelector('.effect-level');
 const sliderElement = effectLevel.querySelector('.effect-level__slider');
 const valueElement = effectLevel.querySelector('.effect-level__value');
+
+
+form.action = 'https://25.javascript.pages.academy/kekstagram';
+fileChooser.accept='image/png, image/jpeg';
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -308,11 +313,6 @@ const showImage = () => {
   addBodyClass();
   overlay.classList.remove('hidden');
 
-  previewImg.onload = () => {
-    URL.revokeObjectURL(previewImg.src);
-  };
-  previewImg.src = URL.createObjectURL(file.files[0]);
-
   setDefaultEffects();
   controlSmaller.addEventListener('click', changeControlSmaller);
   controlBigger.addEventListener('click', changeControlBigger);
@@ -333,8 +333,6 @@ function hideImage () {
   removeBodyClass();
   overlay.classList.add('hidden');
 
-  previewImg.src = 'img/upload-default-image.jpg';
-
   setDefaultEffects();
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
@@ -349,4 +347,20 @@ function hideImage () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-file.addEventListener('change', showImage);
+const chooseFileImg = () => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    previewImg.onload = () => {
+      URL.revokeObjectURL(previewImg.src);
+    };
+    previewImg.src = URL.createObjectURL(fileChooser.files[0]);
+    showImage();
+  }
+
+};
+
+fileChooser.addEventListener('change', chooseFileImg);
