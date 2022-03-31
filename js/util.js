@@ -1,5 +1,8 @@
 const ALERT_SHOW_TIME = 5000;
 
+const MAXIMUM_ID_COUNT = 25;
+const MINIMUM_ID_COUNT = 1;
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const stopEscPropagation = (evt) => {
@@ -30,8 +33,35 @@ const showAlert = (message, color) => {
   }, ALERT_SHOW_TIME);
 };
 
+const getRandomPositiveInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+
+  return Math.floor(result);
+};
+
+const createRandomIdFromRangeGenerator = (min, max) => {
+  const previousValues = [];
+
+  return () => {
+    let currentValue = getRandomPositiveInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomPositiveInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+};
+
+const generateId = createRandomIdFromRangeGenerator( MINIMUM_ID_COUNT, MAXIMUM_ID_COUNT );
+
 export {
   isEscapeKey,
   stopEscPropagation,
   showAlert,
+  generateId,
 };

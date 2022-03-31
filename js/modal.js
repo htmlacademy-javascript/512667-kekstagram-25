@@ -61,7 +61,7 @@ modalOpenElement.addEventListener('click', (evt) => {
     evt.preventDefault();
 
     const targetId = evt.target.id;
-    const pictureId = parseFloat(targetId.slice('picture-'.length)).toFixed(0);
+    const pictureId = parseFloat(targetId.slice('picture-'.length)).toFixed(0) - 1;
     renderPicture(modalElement, pictureId);
 
     openModal();
