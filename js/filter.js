@@ -47,6 +47,11 @@ const showFilterMenu = () => {
   filtersForm.addEventListener('click', showActiveButton);
 };
 
+const hideFilterMenu = () => {
+  filtersForm.removeEventListener('click', showActiveButton);
+};
+
 export {
   showFilterMenu,
+  hideFilterMenu,
 };

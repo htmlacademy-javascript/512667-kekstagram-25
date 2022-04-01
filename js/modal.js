@@ -10,6 +10,11 @@ import {
   isEscapeKey,
 } from './util.js';
 
+import {
+  showFilterMenu,
+  hideFilterMenu,
+} from './filter.js';
+
 const bodyElement = document.querySelector('body');
 const modalElement = document.querySelector('.big-picture');
 const modalOpenElement = document.querySelector('.pictures');
@@ -18,6 +23,7 @@ const modalCloseElement = modalElement.querySelector('#picture-cancel');
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+
     closeModal();
   }
 };
@@ -40,6 +46,8 @@ const openModal = () => {
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
     commentsLoader.addEventListener('click', addNewComments);
   }
+
+  hideFilterMenu();
 };
 
 function closeModal () {
@@ -54,9 +62,11 @@ function closeModal () {
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
     commentsLoader.removeEventListener('click', addNewComments);
   }
+
+  showFilterMenu();
 }
 
-modalOpenElement.addEventListener('click', (evt) => {
+const openModalElement = (evt) => {
   if (evt.target.className.match('picture__img')) {
     evt.preventDefault();
 
@@ -66,9 +76,19 @@ modalOpenElement.addEventListener('click', (evt) => {
 
     openModal();
   }
-});
+};
+
+const showModal = () => {
+  modalOpenElement.addEventListener('click', openModalElement);
+};
+
+const hideModal = () => {
+  modalOpenElement.removeEventListener('click', openModalElement);
+};
 
 export {
   addBodyClass,
   removeBodyClass,
+  showModal,
+  hideModal,
 };

@@ -11,6 +11,10 @@ import {
   showFilterMenu,
 } from './filter.js';
 
+import {
+  showModal,
+} from './modal.js';
+
 const createLoader = () => {
   fetch(
     'https://25.javascript.pages.academy/kekstagram/data',
@@ -31,6 +35,7 @@ const createLoader = () => {
       renderThumbs(photos);
 
       showFilterMenu();
+      showModal();
 
       showAlert('Все данные успешно загружены. Поздравляем!', 'green');
     })

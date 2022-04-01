@@ -1,7 +1,14 @@
 import {
   addBodyClass,
   removeBodyClass,
+  showModal,
+  hideModal,
 } from './modal.js';
+
+import {
+  showFilterMenu,
+  hideFilterMenu,
+} from './filter.js';
 
 import {
   isEscapeKey,
@@ -9,7 +16,7 @@ import {
 } from './util.js';
 
 import {
-  chooseFileImg,
+  addFileChooser,
 } from './choose.js';
 
 import {
@@ -80,11 +87,14 @@ const checkValidateSubmit = () => {
 
 const showImage = () => {
   unblockSubmitButton();
+  hideModal();
+  hideFilterMenu();
 
   addBodyClass();
   overlay.classList.remove('hidden');
 
   setDefaultEffects();
+
   controlSmaller.addEventListener('click', changeControlSmaller);
   controlBigger.addEventListener('click', changeControlBigger);
   effectsList.addEventListener('change', setEffects);
@@ -100,11 +110,15 @@ const showImage = () => {
 
 function hideImage () {
   blockSubmitButton();
+  showModal();
+  showFilterMenu();
 
   removeBodyClass();
   overlay.classList.add('hidden');
 
   setDefaultEffects();
+  previewImg.src = 'img/upload-default-image.jpg';
+
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
   effectsList.removeEventListener('change', setEffects);
@@ -118,7 +132,7 @@ function hideImage () {
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-fileChooser.addEventListener('change', chooseFileImg);
+addFileChooser();
 
 export {
   form,

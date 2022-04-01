@@ -22,6 +22,10 @@ const chooseFileImg = () => {
 
 };
 
+const addFileChooser = () => {
+  fileChooser.addEventListener('change', chooseFileImg);
+};
+
 export {
-  chooseFileImg,
+  addFileChooser,
 };
