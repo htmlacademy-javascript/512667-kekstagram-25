@@ -1,7 +1,7 @@
 import {
   createLoader,
 } from './load.js';
-import './modal.js';
-import './form.js';
+import './pristine.js';
+import './slider.js';
 
 createLoader();
