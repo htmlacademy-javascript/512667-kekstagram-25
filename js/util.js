@@ -59,9 +59,18 @@ const createRandomIdFromRangeGenerator = (min, max) => {
 
 const generateId = createRandomIdFromRangeGenerator( MINIMUM_ID_COUNT, MAXIMUM_ID_COUNT );
 
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
 export {
   isEscapeKey,
   stopEscPropagation,
   showAlert,
   generateId,
+  debounce,
 };

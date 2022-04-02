@@ -6,11 +6,6 @@ import {
 } from './modal.js';
 
 import {
-  showFilterMenu,
-  hideFilterMenu,
-} from './filter.js';
-
-import {
   isEscapeKey,
   stopEscPropagation,
 } from './util.js';
@@ -28,10 +23,6 @@ import {
   setEffects,
   setDefaultEffects,
 } from './effect.js';
-
-import {
-  checkValidateForm,
-} from './pristine.js';
 
 const form = document.querySelector('.img-upload__form');
 
@@ -63,6 +54,7 @@ fileChooser.accept='image/png, image/jpeg';
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+
     hideImage();
   }
 };
@@ -88,7 +80,6 @@ const checkValidateSubmit = () => {
 const showImage = () => {
   unblockSubmitButton();
   hideModal();
-  hideFilterMenu();
 
   addBodyClass();
   overlay.classList.remove('hidden');
@@ -101,7 +92,6 @@ const showImage = () => {
 
   cancel.addEventListener('click', hideImage);
   text.addEventListener('change', checkValidateSubmit);
-  form.addEventListener('submit', checkValidateForm);
   description.addEventListener('keydown', stopEscPropagation);
   hashtags.addEventListener('keydown', stopEscPropagation);
 
@@ -111,7 +101,6 @@ const showImage = () => {
 function hideImage () {
   blockSubmitButton();
   showModal();
-  showFilterMenu();
 
   removeBodyClass();
   overlay.classList.add('hidden');
@@ -125,7 +114,6 @@ function hideImage () {
 
   cancel.removeEventListener('click', hideImage);
   text.removeEventListener('change', checkValidateSubmit);
-  form.removeEventListener('submit', checkValidateForm);
   description.removeEventListener('keydown', stopEscPropagation);
   hashtags.removeEventListener('keydown', stopEscPropagation);
 
@@ -146,4 +134,6 @@ export {
   hashtags,
   showImage,
   hideImage,
+  blockSubmitButton,
+  unblockSubmitButton,
 };

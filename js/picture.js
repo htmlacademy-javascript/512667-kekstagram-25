@@ -52,7 +52,7 @@ const renderPicture = (element, id) => {
   const commentsCount = photosData[id].comments.length;
 
   element.querySelector('.big-picture__img').children[0].src = photosData[id].url;
-  element.querySelector('.big-picture__img').children[0].alt = photosData[id].description;
+  element.querySelector('.big-picture__img').children[0].alt = `Фотография № ${ id + parseFloat(1) }`;
   element.querySelector('.social__caption').textContent = photosData[id].description;
   element.querySelector('.likes-count').textContent = photosData[id].likes;
   element.querySelector('.comments-count').textContent = commentsCount;

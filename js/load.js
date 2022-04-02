@@ -1,23 +1,5 @@
-import {
-  getPhotosData,
-  renderThumbs,
-} from './thumb.js';
-
-import {
-  showAlert,
-} from './util.js';
-
-import {
-  showFilterMenu,
-} from './filter.js';
-
-import {
-  showModal,
-} from './modal.js';
-
-const createLoader = () => {
-  fetch(
-    'https://25.javascript.pages.academy/kekstagram/data',
+const getData = (onSuccess, onError) => {
+  fetch('https://25.javascript.pages.academy/kekstagram/data',
     {
       method: 'GET',
       credentials: 'same-origin',
@@ -31,19 +13,34 @@ const createLoader = () => {
       throw new Error(`${response.status} ${response.statusText}`);
     })
     .then((photos) => {
-      getPhotosData(photos);
-      renderThumbs(photos);
+      onSuccess(photos);
+    })
+    .catch((err) => {
+      onError(err.message);
+    });
+};
 
-      showFilterMenu();
-      showModal();
-
-      showAlert('Все данные успешно загружены. Поздравляем!', 'green');
+const sendData = (onSuccess, onFail, body) => {
+  fetch(
+    'https://25.javascript.pages.academy/kekstagram',
+    {
+      method: 'POST',
+      body,
+    },
+  )
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+      }
     })
     .catch(() => {
-      showAlert('Не удалось загрузить данные. Что-то пошло не так', 'red');
+      onFail('Не удалось отправить форму. Попробуйте ещё раз');
     });
 };
 
 export {
-  createLoader,
+  getData,
+  sendData,
 };

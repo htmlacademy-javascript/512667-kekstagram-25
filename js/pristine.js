@@ -3,6 +3,8 @@ import {
   description,
   hashtags,
   hideImage,
+  blockSubmitButton,
+  unblockSubmitButton,
 } from './form.js';
 
 import {
@@ -24,6 +26,10 @@ import {
 import {
   showAlert,
 } from './util.js';
+
+import {
+  sendData,
+} from './load.js';
 
 const pristine = new Pristine(form, {
   classTo: 'text',
@@ -76,35 +82,28 @@ pristine.addValidator(
   'Имя хэштега включает только буквы и цифры'
 );
 
-const checkValidateForm = (evt) => {
-  evt.preventDefault();
+const setFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-  const isValid = pristine.validate();
-  if (isValid) {
-    const formData = new FormData(evt.target);
-
-    fetch(
-      'https://25.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((response) => {
-        if (response.ok) {
-          hideImage();
-
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
           showAlert('Форма успешно отправлена. Поздравляем!', 'green');
-        } else {
+          unblockSubmitButton();
+        },
+        () => {
           showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
-        }
-      })
-      .catch(() => {
-        showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
-      });
-  }
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
 };
 
-export {
-  checkValidateForm,
-};
+setFormSubmit(hideImage);
+

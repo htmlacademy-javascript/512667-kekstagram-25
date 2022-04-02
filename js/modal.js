@@ -10,11 +10,6 @@ import {
   isEscapeKey,
 } from './util.js';
 
-import {
-  showFilterMenu,
-  hideFilterMenu,
-} from './filter.js';
-
 const bodyElement = document.querySelector('body');
 const modalElement = document.querySelector('.big-picture');
 const modalOpenElement = document.querySelector('.pictures');
@@ -46,8 +41,6 @@ const openModal = () => {
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
     commentsLoader.addEventListener('click', addNewComments);
   }
-
-  hideFilterMenu();
 };
 
 function closeModal () {
@@ -62,8 +55,6 @@ function closeModal () {
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
     commentsLoader.removeEventListener('click', addNewComments);
   }
-
-  showFilterMenu();
 }
 
 const openModalElement = (evt) => {
