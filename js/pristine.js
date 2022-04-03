@@ -4,7 +4,6 @@ import {
   hashtags,
   hideImage,
   blockSubmitButton,
-  unblockSubmitButton,
 } from './form.js';
 
 import {
@@ -24,12 +23,21 @@ import {
 } from './hashtag.js';
 
 import {
-  showAlert,
-} from './util.js';
+  sendData,
+} from './api.js';
 
 import {
-  sendData,
-} from './load.js';
+  showLoading,
+  clearLoading,
+} from './loading.js';
+
+import {
+  showSuccess,
+} from './success.js';
+
+import {
+  showError,
+} from './error.js';
 
 const pristine = new Pristine(form, {
   classTo: 'text',
@@ -89,15 +97,17 @@ const setFormSubmit = (onSuccess) => {
     const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
+      showLoading();
       sendData(
         () => {
           onSuccess();
-          showAlert('Форма успешно отправлена. Поздравляем!', 'green');
-          unblockSubmitButton();
+          clearLoading();
+          showSuccess();
         },
         () => {
-          showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
-          unblockSubmitButton();
+          hideImage();
+          clearLoading();
+          showError();
         },
         new FormData(evt.target),
       );
@@ -106,4 +116,3 @@ const setFormSubmit = (onSuccess) => {
 };
 
 setFormSubmit(hideImage);
-

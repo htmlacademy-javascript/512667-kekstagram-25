@@ -20,7 +20,7 @@ const getData = (onSuccess, onError) => {
     });
 };
 
-const sendData = (onSuccess, onFail, body) => {
+const sendData = (onSuccess, onError, body) => {
   fetch(
     'https://25.javascript.pages.academy/kekstagram',
     {
@@ -32,11 +32,11 @@ const sendData = (onSuccess, onFail, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        onFail('Не удалось отправить форму. Попробуйте ещё раз');
+        onError();
       }
     })
     .catch(() => {
-      onFail('Не удалось отправить форму. Попробуйте ещё раз');
+      onError();
     });
 };
 

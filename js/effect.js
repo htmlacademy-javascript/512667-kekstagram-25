@@ -5,6 +5,8 @@ import {
   sliderElement,
   valueElement,
   effectLevel,
+  description,
+  hashtags,
 } from './form.js';
 
 const setEffects = () => {
@@ -75,6 +77,9 @@ const setDefaultEffects = () => {
   previewImg.style.transform = 'scale(1)';
   previewImg.className = '';
   previewImg.classList.add('effects__preview--none');
+
+  description.value = '';
+  hashtags.value = '';
 };
 
 export {

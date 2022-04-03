@@ -1,6 +1,6 @@
 import {
   getData,
-} from './load.js';
+} from './api.js';
 
 import {
   getPhotosData,
@@ -57,10 +57,10 @@ getData(
     showFilterMenu();
     showModal();
 
-    showAlert('Все данные успешно загружены. Поздравляем!', 'green');
+    showAlert('Все данные успешно загружены. Поздравляем!');
   },
   (err) => {
-    showAlert(`${ err }. Не удалось загрузить данные. Что-то пошло не так`, 'red');
+    showAlert(`${ err }. Не удалось загрузить данные. Что-то пошло не так`);
   },
 );
 

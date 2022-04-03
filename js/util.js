@@ -11,7 +11,7 @@ const stopEscPropagation = (evt) => {
   }
 };
 
-const showAlert = (message, color) => {
+const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';
@@ -22,7 +22,8 @@ const showAlert = (message, color) => {
   alertContainer.style.fontSize = '30px';
   alertContainer.style.lineHeight = '36px';
   alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = color;
+  alertContainer.style.color = '#ffe753';
+  alertContainer.style.backgroundColor = '#3c3614';
 
   alertContainer.textContent = message;
 

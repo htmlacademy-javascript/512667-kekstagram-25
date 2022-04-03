@@ -78,6 +78,7 @@ const hideModal = () => {
 };
 
 export {
+  bodyElement,
   addBodyClass,
   removeBodyClass,
   showModal,
