@@ -1,30 +1,8 @@
-import {
-  addBodyClass,
-  removeBodyClass,
-} from './modal.js';
-
-import {
-  isEscapeKey,
-  stopEscPropagation,
-} from './util.js';
-
-import {
-  chooseFileImg,
-} from './choose.js';
-
-import {
-  changeControlSmaller,
-  changeControlBigger,
-} from './control.js';
-
-import {
-  setEffects,
-  setDefaultEffects,
-} from './effect.js';
-
-import {
-  checkValidateForm,
-} from './pristine.js';
+import { addBodyClass, removeBodyClass, showModal, hideModal, } from './modal.js';
+import { isEscapeKey, stopEscPropagation, } from './util.js';
+import { addFileChooser, } from './choose.js';
+import { changeControlSmaller, changeControlBigger, } from './control.js';
+import { setEffects, setDefaultEffects, } from './effect.js';
 
 const form = document.querySelector('.img-upload__form');
 
@@ -56,6 +34,7 @@ fileChooser.accept='image/png, image/jpeg';
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+
     hideImage();
   }
 };
@@ -80,18 +59,19 @@ const checkValidateSubmit = () => {
 
 const showImage = () => {
   unblockSubmitButton();
+  hideModal();
 
   addBodyClass();
   overlay.classList.remove('hidden');
 
   setDefaultEffects();
+
   controlSmaller.addEventListener('click', changeControlSmaller);
   controlBigger.addEventListener('click', changeControlBigger);
   effectsList.addEventListener('change', setEffects);
 
   cancel.addEventListener('click', hideImage);
   text.addEventListener('change', checkValidateSubmit);
-  form.addEventListener('submit', checkValidateForm);
   description.addEventListener('keydown', stopEscPropagation);
   hashtags.addEventListener('keydown', stopEscPropagation);
 
@@ -100,36 +80,29 @@ const showImage = () => {
 
 function hideImage () {
   blockSubmitButton();
+  showModal();
 
   removeBodyClass();
   overlay.classList.add('hidden');
 
   setDefaultEffects();
+  previewImg.src = 'img/upload-default-image.jpg';
+
   controlSmaller.removeEventListener('click', changeControlSmaller);
   controlBigger.removeEventListener('click', changeControlBigger);
   effectsList.removeEventListener('change', setEffects);
 
   cancel.removeEventListener('click', hideImage);
   text.removeEventListener('change', checkValidateSubmit);
-  form.removeEventListener('submit', checkValidateForm);
   description.removeEventListener('keydown', stopEscPropagation);
   hashtags.removeEventListener('keydown', stopEscPropagation);
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
 
-fileChooser.addEventListener('change', chooseFileImg);
+addFileChooser();
 
 export {
-  form,
-  fileChooser,
-  previewImg,
-  controlValue,
-  sliderElement,
-  valueElement,
-  effectLevel,
-  description,
-  hashtags,
-  showImage,
-  hideImage,
+  form, fileChooser, previewImg, controlValue, sliderElement, valueElement, effectLevel, description, hashtags,
+  showImage, hideImage, blockSubmitButton, unblockSubmitButton,
 };

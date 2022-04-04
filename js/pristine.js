@@ -1,29 +1,14 @@
+import { sendData, } from './api.js';
+import { showLoading, clearLoading, } from './loading.js';
+import { showSuccess, } from './success.js';
+import { showError, } from './error.js';
+import { form, description, hashtags, hideImage, blockSubmitButton, } from './form.js';
+import { MAXIMUM_STRING_LENGTH, checkDescriptionLength, } from './comment.js';
 import {
-  form,
-  description,
-  hashtags,
-  hideImage,
-} from './form.js';
-
-import {
-  MAXIMUM_STRING_LENGTH,
-  checkDescriptionLength,
-} from './comment.js';
-
-import {
-  MAXIMUM_HASHTAG_LENGTH,
-  MAXIMUM_HASHTAGS,
-  checkFirstSymbol,
-  checkOnlySymbol,
-  checkSymbolsLength,
-  checkHashtagsCount,
-  checkHashtagDouble,
-  checkHashtagRegEx,
+  MAXIMUM_HASHTAG_LENGTH, MAXIMUM_HASHTAGS,
+  checkFirstSymbol, checkOnlySymbol, checkSymbolsLength,
+  checkHashtagsCount, checkHashtagDouble, checkHashtagRegEx,
 } from './hashtag.js';
-
-import {
-  showAlert,
-} from './util.js';
 
 const pristine = new Pristine(form, {
   classTo: 'text',
@@ -76,35 +61,29 @@ pristine.addValidator(
   'Имя хэштега включает только буквы и цифры'
 );
 
-const checkValidateForm = (evt) => {
-  evt.preventDefault();
+const setFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-  const isValid = pristine.validate();
-  if (isValid) {
-    const formData = new FormData(evt.target);
-
-    fetch(
-      'https://25.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((response) => {
-        if (response.ok) {
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      showLoading();
+      sendData(
+        () => {
+          onSuccess();
+          clearLoading();
+          showSuccess();
+        },
+        () => {
           hideImage();
-
-          showAlert('Форма успешно отправлена. Поздравляем!', 'green');
-        } else {
-          showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
-        }
-      })
-      .catch(() => {
-        showAlert('Не удалось отправить форму. Попробуйте ещё раз', 'red');
-      });
-  }
+          clearLoading();
+          showError();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
 };
 
-export {
-  checkValidateForm,
-};
+setFormSubmit(hideImage);

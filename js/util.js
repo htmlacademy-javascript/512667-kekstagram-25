@@ -1,5 +1,4 @@
 const ALERT_SHOW_TIME = 5000;
-
 const MAXIMUM_ID_COUNT = 25;
 const MINIMUM_ID_COUNT = 1;
 
@@ -11,7 +10,7 @@ const stopEscPropagation = (evt) => {
   }
 };
 
-const showAlert = (message, color) => {
+const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
   alertContainer.style.position = 'absolute';
@@ -22,7 +21,8 @@ const showAlert = (message, color) => {
   alertContainer.style.fontSize = '30px';
   alertContainer.style.lineHeight = '36px';
   alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = color;
+  alertContainer.style.color = '#ffe753';
+  alertContainer.style.backgroundColor = '#3c3614';
 
   alertContainer.textContent = message;
 
@@ -59,9 +59,12 @@ const createRandomIdFromRangeGenerator = (min, max) => {
 
 const generateId = createRandomIdFromRangeGenerator( MINIMUM_ID_COUNT, MAXIMUM_ID_COUNT );
 
-export {
-  isEscapeKey,
-  stopEscPropagation,
-  showAlert,
-  generateId,
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
 };
+
+export { isEscapeKey, stopEscPropagation, showAlert, generateId, debounce, };

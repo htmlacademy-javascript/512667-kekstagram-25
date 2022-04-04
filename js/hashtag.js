@@ -21,12 +21,6 @@ const checkHashtagDouble = (value) => {
 const checkHashtagRegEx = (value) => splitStrings(value).every((tag) => (tag.match(REGEX_SYMBOLS)));
 
 export {
-  MAXIMUM_HASHTAG_LENGTH,
-  MAXIMUM_HASHTAGS,
-  checkFirstSymbol,
-  checkOnlySymbol,
-  checkSymbolsLength,
-  checkHashtagsCount,
-  checkHashtagDouble,
-  checkHashtagRegEx,
+  MAXIMUM_HASHTAG_LENGTH, MAXIMUM_HASHTAGS,
+  checkFirstSymbol, checkOnlySymbol, checkSymbolsLength, checkHashtagsCount, checkHashtagDouble, checkHashtagRegEx,
 };

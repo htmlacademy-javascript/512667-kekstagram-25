@@ -1,9 +1,4 @@
-import {
-  previewImg,
-  sliderElement,
-  valueElement,
-  effectLevel,
-} from './form.js';
+import { previewImg, sliderElement, valueElement, effectLevel, } from './form.js';
 
 noUiSlider.create(sliderElement, {
   range: {

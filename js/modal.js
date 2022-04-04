@@ -1,14 +1,5 @@
-import {
-  renderPicture,
-  clearPicture,
-  addNewComments,
-  commentsLoader,
-  COMMENTS_LOADING_STEP,
-} from './picture.js';
-
-import {
-  isEscapeKey,
-} from './util.js';
+import { COMMENTS_LOADING_STEP, renderPicture, clearPicture, addNewComments, commentsLoader, } from './picture.js';
+import { isEscapeKey, } from './util.js';
 
 const bodyElement = document.querySelector('body');
 const modalElement = document.querySelector('.big-picture');
@@ -18,6 +9,7 @@ const modalCloseElement = modalElement.querySelector('#picture-cancel');
 const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
+
     closeModal();
   }
 };
@@ -56,7 +48,7 @@ function closeModal () {
   }
 }
 
-modalOpenElement.addEventListener('click', (evt) => {
+const openModalElement = (evt) => {
   if (evt.target.className.match('picture__img')) {
     evt.preventDefault();
 
@@ -66,9 +58,14 @@ modalOpenElement.addEventListener('click', (evt) => {
 
     openModal();
   }
-});
-
-export {
-  addBodyClass,
-  removeBodyClass,
 };
+
+const showModal = () => {
+  modalOpenElement.addEventListener('click', openModalElement);
+};
+
+const hideModal = () => {
+  modalOpenElement.removeEventListener('click', openModalElement);
+};
+
+export { bodyElement, addBodyClass, removeBodyClass, showModal, hideModal, };

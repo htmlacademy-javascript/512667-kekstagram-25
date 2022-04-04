@@ -1,7 +1,4 @@
-import {
-  previewImg,
-  controlValue,
-} from './form.js';
+import { previewImg, controlValue, } from './form.js';
 
 const changeControlSmaller = () => {
   const currentValue = parseFloat(controlValue.value);
@@ -25,7 +22,4 @@ const changeControlBigger = () => {
   }
 };
 
-export {
-  changeControlSmaller,
-  changeControlBigger,
-};
+export { changeControlSmaller, changeControlBigger, };

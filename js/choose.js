@@ -1,8 +1,4 @@
-import {
-  fileChooser,
-  previewImg,
-  showImage,
-} from './form.js';
+import { fileChooser, previewImg, showImage, } from './form.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -22,6 +18,8 @@ const chooseFileImg = () => {
 
 };
 
-export {
-  chooseFileImg,
+const addFileChooser = () => {
+  fileChooser.addEventListener('change', chooseFileImg);
 };
+
+export { addFileChooser, };

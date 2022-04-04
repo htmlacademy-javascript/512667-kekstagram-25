@@ -6,11 +6,11 @@ const renderThumbs = (value) => {
   const template = templateFragment.querySelector('.picture');
   const fragment = document.createDocumentFragment();
 
-  value.forEach(({id, url, description, comments, likes}) => {
+  value.forEach(({id, url, comments, likes}) => {
     const element = template.cloneNode(true);
 
     element.querySelector('.picture__img').src = url;
-    element.querySelector('.picture__img').alt = description;
+    element.querySelector('.picture__img').alt = `Фотография № ${ id + parseFloat(1) }`;
     element.querySelector('.picture__img').id = `picture-${ id + 1 }`;
     element.querySelector('.picture__comments').textContent = comments.length;
     element.querySelector('.picture__likes').textContent = likes;
@@ -25,8 +25,4 @@ const getPhotosData = (value) => {
   photosData = value;
 };
 
-export {
-  getPhotosData,
-  renderThumbs,
-  photosData,
-};
+export { photosData, getPhotosData, renderThumbs, };
