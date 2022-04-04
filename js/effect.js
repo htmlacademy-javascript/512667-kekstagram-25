@@ -1,13 +1,4 @@
-import {
-  form,
-  previewImg,
-  controlValue,
-  sliderElement,
-  valueElement,
-  effectLevel,
-  description,
-  hashtags,
-} from './form.js';
+import { form, previewImg, controlValue, sliderElement, valueElement, effectLevel, description, hashtags, } from './form.js';
 
 const setEffects = () => {
   previewImg.className = '';
@@ -82,7 +73,4 @@ const setDefaultEffects = () => {
   hashtags.value = '';
 };
 
-export {
-  setEffects,
-  setDefaultEffects,
-};
+export { setEffects, setDefaultEffects, };

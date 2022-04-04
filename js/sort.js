@@ -1,14 +1,7 @@
-import {
-  generateId,
-} from './util.js';
-
-import {
-  renderThumbs,
-  photosData,
-} from './thumb.js';
+import { generateId, } from './util.js';
+import { renderThumbs, photosData, } from './thumb.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
-
 const randomIds = [];
 
 for (let i = 0; i < RANDOM_PHOTOS_COUNT; i++) {
@@ -95,9 +88,4 @@ const filterDiscussed = (value) => {
   picture.appendChild(fragment);
 };
 
-export {
-  clearThumbs,
-  filterDefault,
-  filterRandom,
-  filterDiscussed,
-};
+export { clearThumbs, filterDefault, filterRandom, filterDiscussed, };

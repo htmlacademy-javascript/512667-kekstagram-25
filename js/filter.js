@@ -45,9 +45,4 @@ const showFilterMenu = () => {
   filter.classList.remove('img-filters--inactive');
 };
 
-export {
-  showFilterMenu,
-  setFilterDefault,
-  setFilterRandom,
-  setFilterDiscussed,
-};
+export { showFilterMenu, setFilterDefault, setFilterRandom, setFilterDiscussed, };

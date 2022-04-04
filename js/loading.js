@@ -1,6 +1,4 @@
-import {
-  form,
-} from './form.js';
+import { form, } from './form.js';
 
 const showLoading = () => {
   const templateFragment = document.querySelector('#messages').content;
@@ -19,7 +17,4 @@ const clearLoading = () => {
   message.remove();
 };
 
-export {
-  showLoading,
-  clearLoading,
-};
+export { showLoading, clearLoading, };

@@ -1,28 +1,8 @@
-import {
-  addBodyClass,
-  removeBodyClass,
-  showModal,
-  hideModal,
-} from './modal.js';
-
-import {
-  isEscapeKey,
-  stopEscPropagation,
-} from './util.js';
-
-import {
-  addFileChooser,
-} from './choose.js';
-
-import {
-  changeControlSmaller,
-  changeControlBigger,
-} from './control.js';
-
-import {
-  setEffects,
-  setDefaultEffects,
-} from './effect.js';
+import { addBodyClass, removeBodyClass, showModal, hideModal, } from './modal.js';
+import { isEscapeKey, stopEscPropagation, } from './util.js';
+import { addFileChooser, } from './choose.js';
+import { changeControlSmaller, changeControlBigger, } from './control.js';
+import { setEffects, setDefaultEffects, } from './effect.js';
 
 const form = document.querySelector('.img-upload__form');
 
@@ -123,17 +103,6 @@ function hideImage () {
 addFileChooser();
 
 export {
-  form,
-  fileChooser,
-  previewImg,
-  controlValue,
-  sliderElement,
-  valueElement,
-  effectLevel,
-  description,
-  hashtags,
-  showImage,
-  hideImage,
-  blockSubmitButton,
-  unblockSubmitButton,
+  form, fileChooser, previewImg, controlValue, sliderElement, valueElement, effectLevel, description, hashtags,
+  showImage, hideImage, blockSubmitButton, unblockSubmitButton,
 };

@@ -1,43 +1,14 @@
+import { sendData, } from './api.js';
+import { showLoading, clearLoading, } from './loading.js';
+import { showSuccess, } from './success.js';
+import { showError, } from './error.js';
+import { form, description, hashtags, hideImage, blockSubmitButton, } from './form.js';
+import { MAXIMUM_STRING_LENGTH, checkDescriptionLength, } from './comment.js';
 import {
-  form,
-  description,
-  hashtags,
-  hideImage,
-  blockSubmitButton,
-} from './form.js';
-
-import {
-  MAXIMUM_STRING_LENGTH,
-  checkDescriptionLength,
-} from './comment.js';
-
-import {
-  MAXIMUM_HASHTAG_LENGTH,
-  MAXIMUM_HASHTAGS,
-  checkFirstSymbol,
-  checkOnlySymbol,
-  checkSymbolsLength,
-  checkHashtagsCount,
-  checkHashtagDouble,
-  checkHashtagRegEx,
+  MAXIMUM_HASHTAG_LENGTH, MAXIMUM_HASHTAGS,
+  checkFirstSymbol, checkOnlySymbol, checkSymbolsLength,
+  checkHashtagsCount, checkHashtagDouble, checkHashtagRegEx,
 } from './hashtag.js';
-
-import {
-  sendData,
-} from './api.js';
-
-import {
-  showLoading,
-  clearLoading,
-} from './loading.js';
-
-import {
-  showSuccess,
-} from './success.js';
-
-import {
-  showError,
-} from './error.js';
 
 const pristine = new Pristine(form, {
   classTo: 'text',

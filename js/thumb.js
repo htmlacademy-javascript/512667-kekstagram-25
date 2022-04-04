@@ -25,8 +25,4 @@ const getPhotosData = (value) => {
   photosData = value;
 };
 
-export {
-  getPhotosData,
-  renderThumbs,
-  photosData,
-};
+export { photosData, getPhotosData, renderThumbs, };

@@ -1,5 +1,4 @@
 const ALERT_SHOW_TIME = 5000;
-
 const MAXIMUM_ID_COUNT = 25;
 const MINIMUM_ID_COUNT = 1;
 
@@ -68,10 +67,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {
-  isEscapeKey,
-  stopEscPropagation,
-  showAlert,
-  generateId,
-  debounce,
-};
+export { isEscapeKey, stopEscPropagation, showAlert, generateId, debounce, };

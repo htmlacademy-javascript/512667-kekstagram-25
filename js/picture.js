@@ -1,6 +1,4 @@
-import {
-  photosData,
-} from './thumb.js';
+import { photosData, } from './thumb.js';
 
 const COMMENTS_LOADING_STEP = 5;
 
@@ -135,10 +133,4 @@ const clearPicture = (element) => {
 
 };
 
-export {
-  renderPicture,
-  clearPicture,
-  addNewComments,
-  commentsLoader,
-  COMMENTS_LOADING_STEP,
-};
+export { COMMENTS_LOADING_STEP, commentsLoader, addNewComments, renderPicture, clearPicture, };

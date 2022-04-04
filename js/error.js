@@ -1,10 +1,5 @@
-import {
-  bodyElement,
-} from './modal.js';
-
-import {
-  isEscapeKey,
-} from './util.js';
+import { bodyElement, } from './modal.js';
+import { isEscapeKey, } from './util.js';
 
 const onErrorEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -48,6 +43,4 @@ const showError = () => {
   openError();
 };
 
-export {
-  showError,
-};
+export { showError, };

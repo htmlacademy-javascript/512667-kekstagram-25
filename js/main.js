@@ -1,34 +1,9 @@
-import {
-  getData,
-} from './api.js';
-
-import {
-  getPhotosData,
-  renderThumbs,
-} from './thumb.js';
-
-import {
-  showFilterMenu,
-  setFilterDefault,
-  setFilterRandom,
-  setFilterDiscussed,
-} from './filter.js';
-
-import {
-  filterDefault,
-  filterRandom,
-  filterDiscussed,
-} from './sort.js';
-
-import {
-  showModal,
-} from './modal.js';
-
-import {
-  showAlert,
-  debounce,
-} from './util.js';
-
+import { getData, } from './api.js';
+import { getPhotosData, renderThumbs, } from './thumb.js';
+import { showFilterMenu, setFilterDefault, setFilterRandom, setFilterDiscussed, } from './filter.js';
+import { filterDefault, filterRandom, filterDiscussed, } from './sort.js';
+import { showModal, } from './modal.js';
+import { showAlert, debounce, } from './util.js';
 import './pristine.js';
 import './slider.js';
 

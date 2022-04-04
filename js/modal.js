@@ -1,14 +1,5 @@
-import {
-  renderPicture,
-  clearPicture,
-  addNewComments,
-  commentsLoader,
-  COMMENTS_LOADING_STEP,
-} from './picture.js';
-
-import {
-  isEscapeKey,
-} from './util.js';
+import { COMMENTS_LOADING_STEP, renderPicture, clearPicture, addNewComments, commentsLoader, } from './picture.js';
+import { isEscapeKey, } from './util.js';
 
 const bodyElement = document.querySelector('body');
 const modalElement = document.querySelector('.big-picture');
@@ -77,10 +68,4 @@ const hideModal = () => {
   modalOpenElement.removeEventListener('click', openModalElement);
 };
 
-export {
-  bodyElement,
-  addBodyClass,
-  removeBodyClass,
-  showModal,
-  hideModal,
-};
+export { bodyElement, addBodyClass, removeBodyClass, showModal, hideModal, };

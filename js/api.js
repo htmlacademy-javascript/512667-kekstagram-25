@@ -31,8 +31,6 @@ const sendData = (onSuccess, onError, body) => {
     .then((response) => {
       if (response.ok) {
         onSuccess();
-      } else {
-        onError();
       }
     })
     .catch(() => {
@@ -40,7 +38,4 @@ const sendData = (onSuccess, onError, body) => {
     });
 };
 
-export {
-  getData,
-  sendData,
-};
+export { getData, sendData, };
