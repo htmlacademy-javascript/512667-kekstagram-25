@@ -10,7 +10,7 @@ import {
   checkHashtagsCount, checkHashtagDouble, checkHashtagRegEx,
 } from './hashtag.js';
 
-const pristine = new Pristine(form, {
+const pristine = new window.Pristine(form, {
   classTo: 'text',
   errorClass: 'text--invalid',
   successClass: 'text--valid',
