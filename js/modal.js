@@ -1,4 +1,4 @@
-import { COMMENTS_LOADING_STEP, renderPicture, clearPicture, addNewComments, commentsLoader, } from './picture.js';
+import { COMMENTS_LOADING_STEP, renderPicture, onCommentsLoaderClickButton, commentsLoader, } from './picture.js';
 import { isEscapeKey, } from './util.js';
 
 const bodyElement = document.querySelector('body');
@@ -10,7 +10,7 @@ const onModalEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
-    closeModal();
+    onModalCloseClickButton();
   }
 };
 
@@ -27,28 +27,26 @@ const openModal = () => {
   addBodyClass();
 
   document.addEventListener('keydown', onModalEscKeydown);
-  modalCloseElement.addEventListener('click', closeModal);
+  modalCloseElement.addEventListener('click', onModalCloseClickButton);
 
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
-    commentsLoader.addEventListener('click', addNewComments);
+    commentsLoader.addEventListener('click', onCommentsLoaderClickButton);
   }
 };
 
-function closeModal () {
+function onModalCloseClickButton () {
   modalElement.classList.add('hidden');
   removeBodyClass();
 
-  clearPicture(modalElement);
-  modalCloseElement.removeEventListener('click', closeModal);
-
+  modalCloseElement.removeEventListener('click', onModalCloseClickButton);
   document.removeEventListener('keydown', onModalEscKeydown);
 
   if (document.querySelector('.comments-count').textContent > COMMENTS_LOADING_STEP) {
-    commentsLoader.removeEventListener('click', addNewComments);
+    commentsLoader.removeEventListener('click', onCommentsLoaderClickButton);
   }
 }
 
-const openModalElement = (evt) => {
+const onModalOpenClickButton = (evt) => {
   if (evt.target.className.match('picture__img')) {
     evt.preventDefault();
 
@@ -61,11 +59,11 @@ const openModalElement = (evt) => {
 };
 
 const showModal = () => {
-  modalOpenElement.addEventListener('click', openModalElement);
+  modalOpenElement.addEventListener('click', onModalOpenClickButton);
 };
 
 const hideModal = () => {
-  modalOpenElement.removeEventListener('click', openModalElement);
+  modalOpenElement.removeEventListener('click', onModalOpenClickButton);
 };
 
 export { bodyElement, addBodyClass, removeBodyClass, showModal, hideModal, };

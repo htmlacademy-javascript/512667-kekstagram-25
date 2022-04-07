@@ -2,7 +2,7 @@ import { sendData, } from './api.js';
 import { showLoading, clearLoading, } from './loading.js';
 import { showSuccess, } from './success.js';
 import { showError, } from './error.js';
-import { form, description, hashtags, hideImage, blockSubmitButton, } from './form.js';
+import { form, description, hashtags, onCancelClickButton, blockSubmitButton, } from './form.js';
 import { MAXIMUM_STRING_LENGTH, checkDescriptionLength, } from './comment.js';
 import {
   MAXIMUM_HASHTAG_LENGTH, MAXIMUM_HASHTAGS,
@@ -11,11 +11,11 @@ import {
 } from './hashtag.js';
 
 const pristine = new Pristine(form, {
-  classTo: 'text',
-  errorClass: 'text--invalid',
-  successClass: 'text--valid',
-  errorTextParent: 'text',
-  errorTextTag: 'div',
+  classTo: 'text__label',
+  errorClass: 'text__label--invalid',
+  successClass: 'text__label--valid',
+  errorTextParent: 'text__label',
+  errorTextTag: 'p',
   errorTextClass: 'text__error'
 }, true);
 
@@ -76,7 +76,7 @@ const setFormSubmit = (onSuccess) => {
           showSuccess();
         },
         () => {
-          hideImage();
+          onCancelClickButton();
           clearLoading();
           showError();
         },
@@ -86,4 +86,4 @@ const setFormSubmit = (onSuccess) => {
   });
 };
 
-setFormSubmit(hideImage);
+setFormSubmit(onCancelClickButton);

@@ -1,25 +1,28 @@
 import { previewImg, controlValue, } from './form.js';
 
-const changeControlSmaller = () => {
+const SCALE_STEP_SIZE = 25;
+const SCALE_FULL_SIZE = 100;
+
+const onControlSmallerClickButton = () => {
   const currentValue = parseFloat(controlValue.value);
 
-  if (currentValue > 25) {
-    controlValue.value = `${ currentValue - 25 }%`;
-    previewImg.style.transform = `scale(${ (currentValue - 25)/100 })`;
+  if (currentValue > SCALE_STEP_SIZE) {
+    controlValue.value = `${ currentValue - SCALE_STEP_SIZE }%`;
+    previewImg.style.transform = `scale(${ (currentValue - SCALE_STEP_SIZE)/SCALE_FULL_SIZE })`;
   } else {
-    controlValue.value = '25%';
+    controlValue.value = `${ SCALE_STEP_SIZE }%`;
   }
 };
 
-const changeControlBigger = () => {
+const onControlBiggerClickButton = () => {
   const currentValue = parseFloat(controlValue.value);
 
-  if (currentValue < 100) {
-    controlValue.value = `${ currentValue + 25 }%`;
-    previewImg.style.transform = `scale(${ (currentValue + 25)/100 })`;
+  if (currentValue < SCALE_FULL_SIZE) {
+    controlValue.value = `${ currentValue + SCALE_STEP_SIZE }%`;
+    previewImg.style.transform = `scale(${ (currentValue + SCALE_STEP_SIZE)/SCALE_FULL_SIZE })`;
   } else {
-    controlValue.value = '100%';
+    controlValue.value = `${ SCALE_FULL_SIZE }%`;
   }
 };
 
-export { changeControlSmaller, changeControlBigger, };
+export { onControlSmallerClickButton, onControlBiggerClickButton, };

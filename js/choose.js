@@ -1,8 +1,8 @@
-import { fileChooser, previewImg, showImage, } from './form.js';
+import { fileChooser, previewImg, showImageModal, } from './form.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const chooseFileImg = () => {
+const onFileChooserChangeButton = () => {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -13,13 +13,13 @@ const chooseFileImg = () => {
       URL.revokeObjectURL(previewImg.src);
     };
     previewImg.src = URL.createObjectURL(fileChooser.files[0]);
-    showImage();
+    showImageModal();
   }
 
 };
 
 const addFileChooser = () => {
-  fileChooser.addEventListener('change', chooseFileImg);
+  fileChooser.addEventListener('change', onFileChooserChangeButton);
 };
 
 export { addFileChooser, };

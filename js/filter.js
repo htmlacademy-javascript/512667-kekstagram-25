@@ -6,21 +6,19 @@ const filterDefaultButton = filtersForm.querySelector('#filter-default');
 const filterRandomButton = filtersForm.querySelector('#filter-random');
 const filterDiscussedButton = filtersForm.querySelector('#filter-discussed');
 
-filtersForm.addEventListener('click', (evt) => {
-  evt.preventDefault();
-
+const setActiveFilterButton = (evt) => {
   if (evt.target.className.match('img-filters__button')) {
-    for (let i = 0; i < filtersButton.length; i++) {
-      filtersButton[i].classList.remove('img-filters__button--active');
-    }
+    filtersButton.forEach((element) => {
+      element.classList.remove('img-filters__button--active');
+    });
     evt.target.classList.add('img-filters__button--active');
   }
-});
+};
 
 const setFilterDefault = (callback) => {
   filterDefaultButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-
+    setActiveFilterButton(evt);
     callback();
   });
 };
@@ -28,7 +26,7 @@ const setFilterDefault = (callback) => {
 const setFilterRandom = (callback) => {
   filterRandomButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-
+    setActiveFilterButton(evt);
     callback();
   });
 };
@@ -36,7 +34,7 @@ const setFilterRandom = (callback) => {
 const setFilterDiscussed = (callback) => {
   filterDiscussedButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-
+    setActiveFilterButton(evt);
     callback();
   });
 };

@@ -2,10 +2,10 @@ import { generateId, } from './util.js';
 import { renderThumbs, photosData, } from './thumb.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
-const randomIds = [];
+const randomIdArray = [];
 
-for (let i = 0; i < RANDOM_PHOTOS_COUNT; i++) {
-  randomIds[i] = generateId();
+while (randomIdArray.length < RANDOM_PHOTOS_COUNT) {
+  randomIdArray.push(generateId());
 }
 
 const clearThumbs = () => {
@@ -34,7 +34,7 @@ const comparePhotos = (photoA, photoB) => {
   return rankB - rankA;
 };
 
-const filterRandom = (value) => {
+const filterRandom = (values) => {
   clearThumbs();
 
   const picture = document.querySelector('.pictures');
@@ -42,27 +42,26 @@ const filterRandom = (value) => {
   const template = templateFragment.querySelector('.picture');
   const fragment = document.createDocumentFragment();
 
-  for (let i = 0; i < randomIds.length; i++) {
-    for (let j = 0; j < value.length; j++) {
-
-      if (randomIds[i] === j + 1) {
+  randomIdArray.forEach((randomId) => {
+    values.forEach(({id, url, comments, likes}) => {
+      if (randomId === id + 1) {
         const element = template.cloneNode(true);
 
-        element.querySelector('.picture__img').src = value[j].url;
-        element.querySelector('.picture__img').alt = value[j].description;
-        element.querySelector('.picture__img').id = `picture-${ value[j].id + 1 }`;
-        element.querySelector('.picture__comments').textContent = value[j].comments.length;
-        element.querySelector('.picture__likes').textContent = value[j].likes;
+        element.querySelector('.picture__img').src = url;
+        element.querySelector('.picture__img').alt = `Фотография № ${ parseFloat(id) + 1 }`;
+        element.querySelector('.picture__img').id = `picture-${ parseFloat(id) + 1 }`;
+        element.querySelector('.picture__comments').textContent = comments.length;
+        element.querySelector('.picture__likes').textContent = likes;
 
         fragment.appendChild(element);
       }
-    }
-  }
+    });
+  });
 
   picture.appendChild(fragment);
 };
 
-const filterDiscussed = (value) => {
+const filterDiscussed = (values) => {
   clearThumbs();
 
   const picture = document.querySelector('.pictures');
@@ -70,7 +69,7 @@ const filterDiscussed = (value) => {
   const template = templateFragment.querySelector('.picture');
   const fragment = document.createDocumentFragment();
 
-  value
+  values
     .slice()
     .sort(comparePhotos)
     .forEach(({id, url, description, comments, likes}) => {

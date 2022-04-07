@@ -1,17 +1,17 @@
 let photosData = [];
 
-const renderThumbs = (value) => {
+const renderThumbs = (values) => {
   const picture = document.querySelector('.pictures');
   const templateFragment = document.querySelector('#picture').content;
   const template = templateFragment.querySelector('.picture');
   const fragment = document.createDocumentFragment();
 
-  value.forEach(({id, url, comments, likes}) => {
+  values.forEach(({id, url, comments, likes}) => {
     const element = template.cloneNode(true);
 
     element.querySelector('.picture__img').src = url;
-    element.querySelector('.picture__img').alt = `Фотография № ${ id + parseFloat(1) }`;
-    element.querySelector('.picture__img').id = `picture-${ id + 1 }`;
+    element.querySelector('.picture__img').alt = `Фотография № ${ parseFloat(id) + 1 }`;
+    element.querySelector('.picture__img').id = `picture-${ parseFloat(id) + 1 }`;
     element.querySelector('.picture__comments').textContent = comments.length;
     element.querySelector('.picture__likes').textContent = likes;
 
@@ -21,8 +21,8 @@ const renderThumbs = (value) => {
   picture.appendChild(fragment);
 };
 
-const getPhotosData = (value) => {
-  photosData = value;
+const getPhotosData = (values) => {
+  photosData = values;
 };
 
 export { photosData, getPhotosData, renderThumbs, };
