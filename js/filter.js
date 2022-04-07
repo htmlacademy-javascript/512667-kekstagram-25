@@ -18,24 +18,33 @@ const setActiveFilterButton = (evt) => {
 const setFilterDefault = (callback) => {
   filterDefaultButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    setActiveFilterButton(evt);
-    callback();
+
+    if (!evt.target.className.match('img-filters__button--active')) {
+      setActiveFilterButton(evt);
+      callback();
+    }
   });
 };
 
 const setFilterRandom = (callback) => {
   filterRandomButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    setActiveFilterButton(evt);
-    callback();
+
+    if (!evt.target.className.match('img-filters__button--active')) {
+      setActiveFilterButton(evt);
+      callback();
+    }
   });
 };
 
 const setFilterDiscussed = (callback) => {
   filterDiscussedButton.addEventListener('click', (evt) => {
     evt.preventDefault();
-    setActiveFilterButton(evt);
-    callback();
+
+    if (!evt.target.className.match('img-filters__button--active')) {
+      setActiveFilterButton(evt);
+      callback();
+    }
   });
 };
 
