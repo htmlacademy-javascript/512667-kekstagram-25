@@ -3,9 +3,24 @@ import { photosData, } from './thumb.js';
 const COMMENTS_LOADING_STEP = 5;
 
 const commentsCounter = document.querySelector('.social__comment-count');
+const spanCurrentContainer = document.createElement('span');
+const spanCountContainer = document.createElement('span');
+const spanTextContainer = document.createElement('span');
 const commentsLoader = document.querySelector('.comments-loader');
 
-const addNewComments = () => {
+commentsCounter.textContent = '';
+
+spanCurrentContainer.classList.add('comments-current');
+commentsCounter.append(spanCurrentContainer);
+
+spanCountContainer.classList.add('comments-count');
+commentsCounter.append(spanCountContainer);
+
+spanTextContainer.classList.add('comments-text');
+spanTextContainer.textContent = ' комментариев';
+commentsCounter.append(spanTextContainer);
+
+const onCommentsLoaderClickButton = () => {
 
   const socialComments = document.querySelectorAll('.social__comment');
   const commentsLength = socialComments.length;
@@ -26,111 +41,63 @@ const addNewComments = () => {
     }
   }
 
-  commentsCounter.innerHTML = '';
+  const commentsCounterSum = commentsHiddenCounter + commentsShownCounter;
+  spanCurrentContainer.textContent = `${ commentsCounterSum } из `;
 
-  if (commentsLength > commentsHiddenCounter + commentsShownCounter) {
-    commentsCounter.innerHTML = `
-      ${ commentsHiddenCounter + commentsShownCounter } из
-      <span class="comments-count">${ commentsLength }</span>
-       комментариев
-    `;
-  } else {
-    commentsCounter.innerHTML = `
-      ${ commentsLength } из
-      <span class="comments-count">${ commentsLength }</span>
-       комментариев
-    `;
-
-    commentsLoader.classList.add('hidden');
-  }
-};
-
-const renderPicture = (element, id) => {
-
-  const commentsCount = photosData[id].comments.length;
-
-  element.querySelector('.big-picture__img').children[0].src = photosData[id].url;
-  element.querySelector('.big-picture__img').children[0].alt = `Фотография № ${ id + parseFloat(1) }`;
-  element.querySelector('.social__caption').textContent = photosData[id].description;
-  element.querySelector('.likes-count').textContent = photosData[id].likes;
-  element.querySelector('.comments-count').textContent = commentsCount;
-
-  element.querySelector('.social__comments').innerHTML = '';
-
-  if (commentsCount - 1 < COMMENTS_LOADING_STEP) {
-    element.querySelector('.social__comment-count').innerHTML = '';
-
-    element.querySelector('.social__comment-count').innerHTML = `
-    ${ commentsCount } из
-      <span class="comments-count">${ commentsCount }</span>
-      комментариев
-    `;
-
+  if (commentsLength === commentsCounterSum) {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
   }
+};
 
-  for (let i = 0; i < commentsCount; i++) {
-    let socialCommentString = '';
+const renderComments = (values) => {
+  const commentsList = document.querySelector('.social__comments');
+  const templateFragment = document.querySelector('#comment').content;
+  const template = templateFragment.querySelector('.social__comment');
+  const fragment = document.createDocumentFragment();
 
-    if (i >= COMMENTS_LOADING_STEP) {
-      socialCommentString = ' hidden';
+  let commentsCount = 0;
+
+  values.comments.forEach(({id, avatar, name, message}) => {
+    const element = template.cloneNode(true);
+    element.id = `comment-${ parseFloat(id) + 1 }`;
+
+    commentsCount++;
+    if (commentsCount > COMMENTS_LOADING_STEP) {
+      element.classList.add('hidden');
     }
 
-    element.querySelector('.social__comments').innerHTML += `
-    <li class="social__comment${ socialCommentString }">
-      <img
-          class="social__picture"
-          src="${ photosData[id].comments[i].avatar }"
-          alt="${ photosData[id].comments[i].name }"
-          width="35" height="35">
-      <p class="social__text">${ photosData[id].comments[i].message }</p>
-    </li>
-    `;
+    element.querySelector('.social__picture').src = avatar;
+    element.querySelector('.social__picture').alt = name;
+    element.querySelector('.social__text').textContent = message;
+
+    fragment.appendChild(element);
+  });
+
+  commentsList.textContent = '';
+  commentsList.appendChild(fragment);
+};
+
+const renderPicture = (element, id) => {
+
+  const commentsLength = photosData[id].comments.length;
+
+  element.querySelector('.big-picture__img').children[0].src = photosData[id].url;
+  element.querySelector('.big-picture__img').children[0].alt = `Фотография № ${ parseFloat(id) + 1 }`;
+  element.querySelector('.social__caption').textContent = photosData[id].description;
+  element.querySelector('.likes-count').textContent = photosData[id].likes;
+  element.querySelector('.comments-count').textContent = commentsLength;
+
+  if (commentsLength <= COMMENTS_LOADING_STEP) {
+    spanCurrentContainer.textContent = `${ commentsLength } из `;
+    commentsLoader.classList.add('hidden');
+  } else {
+    spanCurrentContainer.textContent = '5 из ';
+    commentsLoader.classList.remove('hidden');
   }
 
+  renderComments(photosData[id]);
 };
 
-const clearPicture = (element) => {
-
-  element.querySelector('.big-picture__img').children[0].src = 'img/logo-background-3.jpg';
-  element.querySelector('.big-picture__img').children[0].alt = 'Девушка в купальнике';
-  element.querySelector('.social__caption').textContent = 'Тестим новую камеру! =)';
-  element.querySelector('.likes-count').textContent = '356';
-
-  element.querySelector('.social__comment-count').innerHTML = '';
-
-  element.querySelector('.social__comment-count').innerHTML = `
-    5 из
-    <span class="comments-count">125</span>
-     комментариев
-  `;
-
-  element.querySelector('.social__comments').innerHTML = '';
-
-  element.querySelector('.social__comments').innerHTML += `
-  <li class="social__comment">
-    <img
-        class="social__picture"
-        src="img/avatar-4.svg"
-        alt="Аватар комментатора фотографии"
-        width="35" height="35">
-    <p class="social__text">Мега фото! Просто обалдеть. Как вам так удалось?</p>
-  </li>
-  `;
-
-  element.querySelector('.social__comments').innerHTML += `
-  <li class="social__comment">
-    <img
-        class="social__picture"
-        src="img/avatar-3.svg"
-        alt="Аватар комментатора фотографии"
-        width="35" height="35">
-    <p class="social__text">Да это фоташоп!!!!!!!!</p>
-  </li>
-  `;
-
-};
-
-export { COMMENTS_LOADING_STEP, commentsLoader, addNewComments, renderPicture, clearPicture, };
+export { COMMENTS_LOADING_STEP, commentsLoader, onCommentsLoaderClickButton, renderPicture, };

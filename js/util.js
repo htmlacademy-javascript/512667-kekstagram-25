@@ -4,7 +4,7 @@ const MINIMUM_ID_COUNT = 1;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const stopEscPropagation = (evt) => {
+const onStopPropagationEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
@@ -67,4 +67,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export { isEscapeKey, stopEscPropagation, showAlert, generateId, debounce, };
+export { isEscapeKey, onStopPropagationEscKeydown, showAlert, generateId, debounce, };

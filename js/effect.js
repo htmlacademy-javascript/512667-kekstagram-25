@@ -1,6 +1,6 @@
-import { form, previewImg, controlValue, sliderElement, valueElement, effectLevel, description, hashtags, } from './form.js';
+import { form, previewImg, sliderElement, effectLevel, } from './form.js';
 
-const setEffects = () => {
+const onEffectsListChangeButton = () => {
   previewImg.className = '';
   previewImg.classList.add(`effects__preview--${ form.elements.effect.value }`);
 
@@ -60,17 +60,4 @@ const setEffects = () => {
   sliderElement.noUiSlider.updateOptions(effectsSettings[form.elements.effect.value]);
 };
 
-const setDefaultEffects = () => {
-  valueElement.value = 100;
-  controlValue.value = '100%';
-  effectLevel.style.display = 'none';
-  previewImg.style.filter = 'none';
-  previewImg.style.transform = 'scale(1)';
-  previewImg.className = '';
-  previewImg.classList.add('effects__preview--none');
-
-  description.value = '';
-  hashtags.value = '';
-};
-
-export { setEffects, setDefaultEffects, };
+export { onEffectsListChangeButton, };

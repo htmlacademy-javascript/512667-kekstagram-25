@@ -1,18 +1,19 @@
+import { POST_URL, } from './api.js';
 import { addBodyClass, removeBodyClass, showModal, hideModal, } from './modal.js';
-import { isEscapeKey, stopEscPropagation, } from './util.js';
+import { isEscapeKey, onStopPropagationEscKeydown, } from './util.js';
 import { addFileChooser, } from './choose.js';
-import { changeControlSmaller, changeControlBigger, } from './control.js';
-import { setEffects, setDefaultEffects, } from './effect.js';
+import { onControlSmallerClickButton, onControlBiggerClickButton, } from './control.js';
+import { onEffectsListChangeButton } from './effect.js';
 
 const form = document.querySelector('.img-upload__form');
 
 const overlay = form.querySelector('.img-upload__overlay');
 const cancel = form.querySelector('.img-upload__cancel');
 
-const description = form.querySelector('.text__description');
-const hashtags = form.querySelector('.text__hashtags');
-
 const text = form.querySelector('.text');
+const hashtags = text.querySelector('.text__hashtags');
+const description = text.querySelector('.text__description');
+
 const fileChooser = form.querySelector('#upload-file');
 const submit = form.querySelector('#upload-submit');
 
@@ -28,14 +29,14 @@ const effectLevel = form.querySelector('.effect-level');
 const sliderElement = effectLevel.querySelector('.effect-level__slider');
 const valueElement = effectLevel.querySelector('.effect-level__value');
 
-form.action = 'https://25.javascript.pages.academy/kekstagram';
+form.action = POST_URL;
 fileChooser.accept='image/png, image/jpeg';
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
 
-    hideImage();
+    onCancelClickButton();
   }
 };
 
@@ -49,53 +50,61 @@ const unblockSubmitButton = () => {
   submit.disabled = false;
 };
 
-const checkValidateSubmit = () => {
-  if (text.classList.contains('text--invalid')) {
-    blockSubmitButton();
-  } else if (text.classList.contains('text--valid')) {
-    unblockSubmitButton();
-  }
+const setDefaultValues = () => {
+  valueElement.value = 100;
+  controlValue.value = '100%';
+  effectLevel.style.display = 'none';
+  previewImg.style.filter = 'none';
+  previewImg.style.transform = 'scale(1)';
+  previewImg.className = '';
+  previewImg.classList.add('effects__preview--none');
+
+  description.value = '';
+  hashtags.value = '';
+
+  const textErrors = text.querySelectorAll('.text__error');
+  textErrors.forEach((textError) => {
+    textError.textContent = '';
+  });
 };
 
-const showImage = () => {
+const showImageModal = () => {
   unblockSubmitButton();
   hideModal();
 
   addBodyClass();
   overlay.classList.remove('hidden');
 
-  setDefaultEffects();
+  setDefaultValues();
 
-  controlSmaller.addEventListener('click', changeControlSmaller);
-  controlBigger.addEventListener('click', changeControlBigger);
-  effectsList.addEventListener('change', setEffects);
+  controlSmaller.addEventListener('click', onControlSmallerClickButton);
+  controlBigger.addEventListener('click', onControlBiggerClickButton);
+  effectsList.addEventListener('change', onEffectsListChangeButton);
 
-  cancel.addEventListener('click', hideImage);
-  text.addEventListener('change', checkValidateSubmit);
-  description.addEventListener('keydown', stopEscPropagation);
-  hashtags.addEventListener('keydown', stopEscPropagation);
+  cancel.addEventListener('click', onCancelClickButton);
+  description.addEventListener('keydown', onStopPropagationEscKeydown);
+  hashtags.addEventListener('keydown', onStopPropagationEscKeydown);
 
   document.addEventListener('keydown', onPopupEscKeydown);
 };
 
-function hideImage () {
+function onCancelClickButton () {
   blockSubmitButton();
   showModal();
 
   removeBodyClass();
   overlay.classList.add('hidden');
 
-  setDefaultEffects();
+  setDefaultValues();
   previewImg.src = 'img/upload-default-image.jpg';
 
-  controlSmaller.removeEventListener('click', changeControlSmaller);
-  controlBigger.removeEventListener('click', changeControlBigger);
-  effectsList.removeEventListener('change', setEffects);
+  controlSmaller.removeEventListener('click', onControlSmallerClickButton);
+  controlBigger.removeEventListener('click', onControlBiggerClickButton);
+  effectsList.removeEventListener('change', onEffectsListChangeButton);
 
-  cancel.removeEventListener('click', hideImage);
-  text.removeEventListener('change', checkValidateSubmit);
-  description.removeEventListener('keydown', stopEscPropagation);
-  hashtags.removeEventListener('keydown', stopEscPropagation);
+  cancel.removeEventListener('click', onCancelClickButton);
+  description.removeEventListener('keydown', onStopPropagationEscKeydown);
+  hashtags.removeEventListener('keydown', onStopPropagationEscKeydown);
 
   document.removeEventListener('keydown', onPopupEscKeydown);
 }
@@ -104,5 +113,5 @@ addFileChooser();
 
 export {
   form, fileChooser, previewImg, controlValue, sliderElement, valueElement, effectLevel, description, hashtags,
-  showImage, hideImage, blockSubmitButton, unblockSubmitButton,
+  showImageModal, onCancelClickButton, blockSubmitButton, unblockSubmitButton,
 };
