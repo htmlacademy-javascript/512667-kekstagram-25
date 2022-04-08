@@ -1,5 +1,5 @@
 import { generateId, } from './util.js';
-import { renderThumbs, photosData, } from './thumb.js';
+import { renderThumbs, } from './thumb.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
 const randomIdArray = [];
@@ -16,7 +16,7 @@ const clearThumbs = () => {
   });
 };
 
-const filterDefault = () => {
+const renderFilterDefault = (photosData) => {
   clearThumbs();
   renderThumbs(photosData);
 };
@@ -34,7 +34,7 @@ const comparePhotos = (photoA, photoB) => {
   return rankB - rankA;
 };
 
-const filterRandom = (values) => {
+const renderFilterRandom = (values) => {
   clearThumbs();
 
   const picture = document.querySelector('.pictures');
@@ -61,7 +61,7 @@ const filterRandom = (values) => {
   picture.appendChild(fragment);
 };
 
-const filterDiscussed = (values) => {
+const renderFilterDiscussed = (values) => {
   clearThumbs();
 
   const picture = document.querySelector('.pictures');
@@ -87,4 +87,4 @@ const filterDiscussed = (values) => {
   picture.appendChild(fragment);
 };
 
-export { clearThumbs, filterDefault, filterRandom, filterDiscussed, };
+export { clearThumbs, renderFilterDefault, renderFilterRandom, renderFilterDiscussed, };

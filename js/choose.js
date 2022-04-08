@@ -12,10 +12,9 @@ const onFileChooserChangeButton = () => {
     previewImg.onload = () => {
       URL.revokeObjectURL(previewImg.src);
     };
-    previewImg.src = URL.createObjectURL(fileChooser.files[0]);
+    previewImg.src = URL.createObjectURL(file);
     showImageModal();
   }
-
 };
 
 const addFileChooser = () => {

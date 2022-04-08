@@ -96,7 +96,7 @@ function onCancelClickButton () {
   overlay.classList.add('hidden');
 
   setDefaultValues();
-  previewImg.src = 'img/upload-default-image.jpg';
+  fileChooser.value = '';
 
   controlSmaller.removeEventListener('click', onControlSmallerClickButton);
   controlBigger.removeEventListener('click', onControlBiggerClickButton);
