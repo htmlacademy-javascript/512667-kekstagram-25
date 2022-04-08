@@ -1,50 +1,52 @@
+import { clearThumbs, renderFilterDefault, renderFilterRandom, renderFilterDiscussed, } from './sort.js';
+
 const filter = document.querySelector('.img-filters');
 const filtersForm = filter.querySelector('.img-filters__form');
-const filtersButton = filtersForm.querySelectorAll('.img-filters__button');
+const filtersButtons = filtersForm.querySelectorAll('.img-filters__button');
 
-const filterDefaultButton = filtersForm.querySelector('#filter-default');
-const filterRandomButton = filtersForm.querySelector('#filter-random');
-const filterDiscussedButton = filtersForm.querySelector('#filter-discussed');
+const clearActiveFilters = () => {
+  filtersButtons.forEach((element) => {
+    element.classList.remove('img-filters__button--active');
+  });
+};
 
-const setActiveFilterButton = (evt) => {
-  if (evt.target.className.match('img-filters__button')) {
-    filtersButton.forEach((element) => {
-      element.classList.remove('img-filters__button--active');
-    });
-    evt.target.classList.add('img-filters__button--active');
+const setActiveFilter = (filterId) => {
+  const currentFilter = filtersForm.querySelector(`#${ filterId }`);
+  currentFilter.classList.add('img-filters__button--active');
+};
+
+const isActiveFilter = (filterId) => {
+  const currentFilter = filtersForm.querySelector(`#${ filterId }`);
+  if (!currentFilter.className.match('img-filters__button--active')) {
+    return false;
+  }
+  return true;
+};
+
+const renderActiveFilter = (filterId, photosData) => {
+  switch (filterId) {
+    case 'filter-random': {
+      renderFilterRandom(photosData);
+      break;
+    }
+    case 'filter-discussed': {
+      renderFilterDiscussed(photosData);
+      break;
+    }
+    case 'filter-default': {
+      renderFilterDefault(photosData);
+      break;
+    }
+    default: {
+      clearThumbs();
+    }
   }
 };
 
-const setFilterDefault = (callback) => {
-  filterDefaultButton.addEventListener('click', (evt) => {
+const setFiltersForm = (callback) => {
+  filtersForm.addEventListener('click', (evt) => {
     evt.preventDefault();
-
-    if (!evt.target.className.match('img-filters__button--active')) {
-      setActiveFilterButton(evt);
-      callback();
-    }
-  });
-};
-
-const setFilterRandom = (callback) => {
-  filterRandomButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
-
-    if (!evt.target.className.match('img-filters__button--active')) {
-      setActiveFilterButton(evt);
-      callback();
-    }
-  });
-};
-
-const setFilterDiscussed = (callback) => {
-  filterDiscussedButton.addEventListener('click', (evt) => {
-    evt.preventDefault();
-
-    if (!evt.target.className.match('img-filters__button--active')) {
-      setActiveFilterButton(evt);
-      callback();
-    }
+    callback(evt.target.id);
   });
 };
 
@@ -52,4 +54,4 @@ const showFilterMenu = () => {
   filter.classList.remove('img-filters--inactive');
 };
 
-export { showFilterMenu, setFilterDefault, setFilterRandom, setFilterDiscussed, };
+export { showFilterMenu, setFiltersForm, clearActiveFilters, setActiveFilter, isActiveFilter, renderActiveFilter, };

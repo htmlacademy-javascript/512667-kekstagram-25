@@ -1,7 +1,6 @@
 import { getData, } from './api.js';
 import { getPhotosData, renderThumbs, } from './thumb.js';
-import { showFilterMenu, setFilterDefault, setFilterRandom, setFilterDiscussed, } from './filter.js';
-import { filterDefault, filterRandom, filterDiscussed, } from './sort.js';
+import { showFilterMenu, setFiltersForm, clearActiveFilters, setActiveFilter, isActiveFilter, renderActiveFilter, } from './filter.js';
 import { showModal, } from './modal.js';
 import { showAlert, debounce, } from './util.js';
 import './pristine.js';
@@ -10,22 +9,18 @@ import './slider.js';
 const RERENDER_DELAY = 500;
 
 getData(
-  (photos) => {
-    getPhotosData(photos);
-    renderThumbs(photos);
+  (photosData) => {
+    getPhotosData(photosData);
+    renderThumbs(photosData);
 
-    setFilterDefault(debounce(
-      () => filterDefault(photos),
-      RERENDER_DELAY,
-    ));
-
-    setFilterRandom(debounce(
-      () => filterRandom(photos),
-      RERENDER_DELAY,
-    ));
-
-    setFilterDiscussed(debounce(
-      () => filterDiscussed(photos),
+    setFiltersForm(debounce(
+      (filterId) => {
+        if (!isActiveFilter(filterId)) {
+          clearActiveFilters();
+          setActiveFilter(filterId);
+          renderActiveFilter(filterId, photosData);
+        }
+      },
       RERENDER_DELAY,
     ));
 
